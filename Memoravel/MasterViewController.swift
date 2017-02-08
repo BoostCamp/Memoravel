@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MasterViewController.swift
 //  Memoravel
 //
 //  Created by JUNYEONG.YOO on 2/7/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MasterViewController: UITableViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

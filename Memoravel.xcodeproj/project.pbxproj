@@ -8,20 +8,40 @@
 
 /* Begin PBXBuildFile section */
 		CCB2C1C21E4A0A920060FFB6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1C11E4A0A920060FFB6 /* AppDelegate.swift */; };
-		CCB2C1C41E4A0A920060FFB6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1C31E4A0A920060FFB6 /* ViewController.swift */; };
+		CCB2C1C41E4A0A920060FFB6 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1C31E4A0A920060FFB6 /* MasterViewController.swift */; };
 		CCB2C1C71E4A0A920060FFB6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCB2C1C51E4A0A920060FFB6 /* Main.storyboard */; };
 		CCB2C1C91E4A0A920060FFB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCB2C1C81E4A0A920060FFB6 /* Assets.xcassets */; };
 		CCB2C1CC1E4A0A920060FFB6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCB2C1CA1E4A0A920060FFB6 /* LaunchScreen.storyboard */; };
+		CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */; };
+		CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */; };
+		CCB2C1D81E4A169B0060FFB6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */; };
+		CCB2C1DA1E4A17F90060FFB6 /* CreateJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */; };
+		CCB2C1DC1E4A19390060FFB6 /* AddSubScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */; };
+		CCB2C1DE1E4A1A920060FFB6 /* SearchLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1DD1E4A1A920060FFB6 /* SearchLocationViewController.swift */; };
+		CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */; };
+		CCB2C1E41E4AB3CB0060FFB6 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */; };
+		CCB2C1E61E4AB45A0060FFB6 /* MainSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */; };
+		CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		CCB2C1BE1E4A0A920060FFB6 /* Memoravel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Memoravel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCB2C1C11E4A0A920060FFB6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CCB2C1C31E4A0A920060FFB6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CCB2C1C31E4A0A920060FFB6 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
 		CCB2C1C61E4A0A920060FFB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CCB2C1C81E4A0A920060FFB6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CCB2C1CB1E4A0A920060FFB6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CCB2C1CD1E4A0A920060FFB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetViewController.swift; sourceTree = "<group>"; };
+		CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateJourneyViewController.swift; sourceTree = "<group>"; };
+		CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSubScheduleViewController.swift; sourceTree = "<group>"; };
+		CCB2C1DD1E4A1A920060FFB6 /* SearchLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchLocationViewController.swift; sourceTree = "<group>"; };
+		CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelAsset.swift; sourceTree = "<group>"; };
+		CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSchedule.swift; sourceTree = "<group>"; };
+		CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +74,40 @@
 		CCB2C1C01E4A0A920060FFB6 /* Memoravel */ = {
 			isa = PBXGroup;
 			children = (
+				CCB2C1E01E4AB3350060FFB6 /* Model */,
+				CCB2C1DF1E4AB2B40060FFB6 /* View Controller */,
 				CCB2C1C11E4A0A920060FFB6 /* AppDelegate.swift */,
-				CCB2C1C31E4A0A920060FFB6 /* ViewController.swift */,
 				CCB2C1C51E4A0A920060FFB6 /* Main.storyboard */,
 				CCB2C1C81E4A0A920060FFB6 /* Assets.xcassets */,
 				CCB2C1CA1E4A0A920060FFB6 /* LaunchScreen.storyboard */,
 				CCB2C1CD1E4A0A920060FFB6 /* Info.plist */,
 			);
 			path = Memoravel;
+			sourceTree = "<group>";
+		};
+		CCB2C1DF1E4AB2B40060FFB6 /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CCB2C1C31E4A0A920060FFB6 /* MasterViewController.swift */,
+				CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */,
+				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
+				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
+				CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */,
+				CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */,
+				CCB2C1DD1E4A1A920060FFB6 /* SearchLocationViewController.swift */,
+			);
+			name = "View Controller";
+			sourceTree = "<group>";
+		};
+		CCB2C1E01E4AB3350060FFB6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */,
+				CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */,
+				CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */,
+				CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +183,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCB2C1C41E4A0A920060FFB6 /* ViewController.swift in Sources */,
+				CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */,
+				CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */,
+				CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */,
+				CCB2C1E61E4AB45A0060FFB6 /* MainSchedule.swift in Sources */,
+				CCB2C1C41E4A0A920060FFB6 /* MasterViewController.swift in Sources */,
+				CCB2C1D81E4A169B0060FFB6 /* DetailViewController.swift in Sources */,
+				CCB2C1DC1E4A19390060FFB6 /* AddSubScheduleViewController.swift in Sources */,
 				CCB2C1C21E4A0A920060FFB6 /* AppDelegate.swift in Sources */,
+				CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */,
+				CCB2C1DA1E4A17F90060FFB6 /* CreateJourneyViewController.swift in Sources */,
+				CCB2C1E41E4AB3CB0060FFB6 /* Schedule.swift in Sources */,
+				CCB2C1DE1E4A1A920060FFB6 /* SearchLocationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +356,7 @@
 				CCB2C1D21E4A0A920060FFB6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
