@@ -19,6 +19,10 @@ class MapViewController: UIViewController {
 	var resultSearchController: UISearchController!
 	var selectedPin: MKPlacemark?
 	var delegate: MapViewControllerDelegate?
+	var cancelButton: UIButton!
+	
+	// FIXME: Can uerinputText property change into operational property?
+	var userInputText: String?
 	
 	@IBOutlet weak var searchMapView: MKMapView!
 	
@@ -33,6 +37,7 @@ class MapViewController: UIViewController {
 		// Wire up search result table
 		let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
 		resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+		resultSearchController.delegate = self
 		resultSearchController.searchResultsUpdater = locationSearchTable
 		
 		// Settings for search bar
@@ -49,13 +54,12 @@ class MapViewController: UIViewController {
 		locationSearchTable.delegate = self
 		
 		// Settings for rightBarButton
-		let cancelButton = UIButton(type: .custom)
+		cancelButton = UIButton(type: .custom)
 		cancelButton.setImage(#imageLiteral(resourceName: "cancel_white"), for: .normal)
 		cancelButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
 		cancelButton.addTarget(self, action: #selector(cancelSearching), for: .touchUpInside)
 		cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-		let cancelBarButton = UIBarButtonItem(customView: cancelButton)
-		navigationItem.rightBarButtonItem = cancelBarButton
+		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
     }
 	
 	// Action when user click cancel button
@@ -88,7 +92,12 @@ extension MapViewController : CLLocationManagerDelegate {
 
 extension MapViewController: LocationSearchTableDelegate {
 	
-	func dropPinZoomIn(_ placemark: MKPlacemark){
+	func dropPinZoomIn(_ placemark: MKPlacemark) {
+		// If right bar button item is nil then create it
+		if navigationItem.rightBarButtonItem == nil {
+			navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
+		}
+		
 		// Cache the pin
 		selectedPin = placemark
 		
@@ -143,6 +152,29 @@ extension MapViewController: MKMapViewDelegate {
 		if let delegate = self.delegate, let placemark = self.selectedPin {
 			delegate.didSelectedLocation(placemark)
 			self.dismiss(animated: true, completion: nil)
+		}
+	}
+}
+
+// MARK: - Settings for UISearchController
+
+extension MapViewController: UISearchControllerDelegate {
+	
+	func willPresentSearchController(_ searchController: UISearchController) {
+		navigationItem.rightBarButtonItem = nil
+	}
+	
+	func willDismissSearchController(_ searchController: UISearchController) {
+		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
+		
+		if let text = searchController.searchBar.text {
+			userInputText = text
+		}
+	}
+	
+	func didDismissSearchController(_ searchController: UISearchController) {
+		if let text = userInputText {
+			searchController.searchBar.text = text
 		}
 	}
 }
