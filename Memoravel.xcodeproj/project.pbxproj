@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3356471E4CADE300C58493 /* CalendarViewController.swift */; };
+		CC33564C1E4D91F600C58493 /* FSCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC33564B1E4D91F600C58493 /* FSCalendar.framework */; };
 		CCB265E71E4BE65C00C35E7B /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB265E61E4BE65C00C35E7B /* MapViewController.swift */; };
 		CCB265E91E4BEA7D00C35E7B /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB265E81E4BEA7D00C35E7B /* LocationSearchTable.swift */; };
 		CCB265EB1E4C8E9500C35E7B /* JourneyAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB265EA1E4C8E9500C35E7B /* JourneyAddress.swift */; };
@@ -34,6 +36,8 @@
 
 /* Begin PBXFileReference section */
 		6D8B660C73D09763ADC01E11 /* Pods-Memoravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.debug.xcconfig"; sourceTree = "<group>"; };
+		CC3356471E4CADE300C58493 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		CC33564B1E4D91F600C58493 /* FSCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSCalendar.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Memoravel-gylfyatxkxbccdfmkbsdrplcjrbf/Build/Products/Debug-iphoneos/FSCalendar/FSCalendar.framework"; sourceTree = "<group>"; };
 		CCB265E61E4BE65C00C35E7B /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		CCB265E81E4BEA7D00C35E7B /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		CCB265EA1E4C8E9500C35E7B /* JourneyAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyAddress.swift; sourceTree = "<group>"; };
@@ -67,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC33564C1E4D91F600C58493 /* FSCalendar.framework in Frameworks */,
 				DB244AF3DBEA28BF634C0EDC /* Pods_Memoravel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -77,9 +82,18 @@
 		2928A1E0A47357197286B689 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC33564B1E4D91F600C58493 /* FSCalendar.framework */,
 				D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC3356491E4D85A800C58493 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CCB2C1CD1E4A0A920060FFB6 /* Info.plist */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		CCB2C1B51E4A0A920060FFB6 = {
@@ -103,6 +117,7 @@
 		CCB2C1C01E4A0A920060FFB6 /* Memoravel */ = {
 			isa = PBXGroup;
 			children = (
+				CC3356491E4D85A800C58493 /* Supporting Files */,
 				CCB2C1EF1E4AE5F50060FFB6 /* Utilities */,
 				CCB2C1EC1E4ADEE60060FFB6 /* Data Controller */,
 				CCB2C1E91E4ADE070060FFB6 /* View */,
@@ -110,8 +125,6 @@
 				CCB2C1DF1E4AB2B40060FFB6 /* View Controller */,
 				CCB2C1C11E4A0A920060FFB6 /* AppDelegate.swift */,
 				CCB2C1C81E4A0A920060FFB6 /* Assets.xcassets */,
-				CCB2C1CA1E4A0A920060FFB6 /* LaunchScreen.storyboard */,
-				CCB2C1CD1E4A0A920060FFB6 /* Info.plist */,
 			);
 			path = Memoravel;
 			sourceTree = "<group>";
@@ -127,6 +140,7 @@
 				CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */,
 				CCB265E61E4BE65C00C35E7B /* MapViewController.swift */,
 				CCB265E81E4BEA7D00C35E7B /* LocationSearchTable.swift */,
+				CC3356471E4CADE300C58493 /* CalendarViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -145,6 +159,7 @@
 		CCB2C1E91E4ADE070060FFB6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CCB2C1CA1E4A0A920060FFB6 /* LaunchScreen.storyboard */,
 				CCDB21E31E4C9A8400D73647 /* Main.storyboard */,
 				CCB2C1EA1E4ADE330060FFB6 /* MasterTableViewCell.swift */,
 				CCB2C1F41E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift */,
@@ -303,6 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */,
 				CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */,
 				CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */,
 				CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */,
@@ -448,6 +464,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Boostcamp.Memoravel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -462,6 +479,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Boostcamp.Memoravel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

@@ -60,6 +60,9 @@ class MapViewController: UIViewController {
 		cancelButton.addTarget(self, action: #selector(cancelSearching), for: .touchUpInside)
 		cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
+		
+		// FIXME: Do not follow user location
+		searchMapView.userTrackingMode = .none
     }
 	
 	// Action when user click cancel button

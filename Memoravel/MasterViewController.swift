@@ -54,6 +54,8 @@ class MasterViewController: UITableViewController {
 	
 	func createJourney() {
 		if let nextController = self.storyboard?.instantiateViewController(withIdentifier: "CreateJourneyViewController") as? CreateJourneyViewController {
+			nextController.delegate = self
+			
 			let navController = UINavigationController(rootViewController: nextController)
 			navController.navigationBar.barTintColor = UIColor.journeyMainColor
 			navController.navigationBar.tintColor = UIColor.journeyLightColor
@@ -61,6 +63,12 @@ class MasterViewController: UITableViewController {
 			self.present(navController, animated: true, completion: nil)
 		}
 	}
+}
+
+extension MasterViewController: CreateJourneyViewControllerDelegate {
 	
+	func finishCreatingNewJourney() {
+		tableView.reloadData()
+	}
 }
 

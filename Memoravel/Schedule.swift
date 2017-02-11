@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreLocation
+import MapKit
 
 /**
 일정 정보를 저장하는 데이터 구조입니다.
@@ -15,7 +15,7 @@ import CoreLocation
 */
 struct Schedule {
 	
-	var location: CLLocation
+	var location: MKPlacemark
 	var startDate: Date
 	var endDate: Date
 }

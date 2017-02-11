@@ -9,11 +9,30 @@
 import UIKit
 import MapKit
 
+// FIXME: Change this view controller to UITableViewController (some day...)
+// FIXME: Induce users to add main schedules sequentially according to the date
+
+protocol CreateJourneyViewControllerDelegate {
+	func finishCreatingNewJourney()
+}
+
 class CreateJourneyViewController: UIViewController {
 	
-	var numOfMainSchedule: Int = 1
+	// Data controller handling Journeys
+	let journeyController = JourneyController.shared
+	
+	var delegate: CreateJourneyViewControllerDelegate?
+	
 	var mainSchedule = [MainSchedule]()
-	var activeLocationButton: UIButton?
+	var activeButton: UIButton?
+	
+	var startDateButton: UIButton?
+	var endDateButton: UIButton?
+	var addScheduleButton: UIButton?
+	
+	var selectedLocation: MKPlacemark?
+	var selectedStartDate: Date?
+	var selectedEndDate: Date?
 
 	@IBOutlet weak var journeyTitle: UITextField!
 	@IBOutlet weak var tableView: UITableView!
@@ -23,9 +42,10 @@ class CreateJourneyViewController: UIViewController {
 		journeyTitle.delegate = self
     }
 	
+	// Search location from default map
 	@IBAction func searchLocation(_ sender: UIButton) {
 		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
-			self.activeLocationButton = sender
+			self.activeButton = sender
 			controller.delegate = self
 			
 			let navController = UINavigationController(rootViewController: controller)
@@ -36,20 +56,47 @@ class CreateJourneyViewController: UIViewController {
 		}
 	}
 	
+	// Choose date from calendar
+	@IBAction func chooseDate(_ sender: UIButton) {
+		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "CalendarViewController") as? CalendarViewController {
+			self.activeButton = sender
+			controller.delegate = self
+			controller.senderTag = sender.tag
+			
+			if sender.tag == 2 {
+				// If user clicks end date button
+				controller.startDate = self.selectedStartDate
+			}
+			
+			let navController = UINavigationController(rootViewController: controller)
+			navController.navigationBar.barTintColor = UIColor.journeyMainColor
+			navController.navigationBar.tintColor = UIColor.journeyLightColor
+			navController.navigationBar.barStyle = .black
+			
+			self.present(navController, animated: true, completion: nil)
+		}
+	}
+	
 	// Add another main schedule
 	@IBAction func addMainSchedule(_ sender: UIButton) {
-		numOfMainSchedule += 1
 		sender.isHidden = true
-		// TODO: Add main schedule data to the array
-		tableView.reloadData()
+		if appendNewMainSchedule() { tableView.reloadData() }
 	}
 
 	// MARK: - Complete creation of Journey data or cancel it
 	
 	@IBAction func doneCreation(_ sender: Any) {
-		// Check all the information is presented.
+		if appendNewMainSchedule(), let delegate = self.delegate {
+			// If there's main schedule
+			let journeyStartDate: Date = (self.mainSchedule.first?.schedule.startDate)!
+			let journeyEndDate: Date = (self.mainSchedule.last?.schedule.endDate)!
+			let newJourney = Journey(title: journeyTitle.text ?? "Notitle", startDate: journeyStartDate, endDate: journeyEndDate, mainSchedule: mainSchedule, thumbnailImage: nil)
+			journeyController.addJourney(newJourney)
+			
+			delegate.finishCreatingNewJourney()
+			self.dismiss(animated: true, completion: nil)
+		}
 	}
-	
 	
 	@IBAction func cancelCreating(_ sender: Any) {
 		self.dismiss(animated: true, completion: nil)
@@ -62,11 +109,22 @@ class CreateJourneyViewController: UIViewController {
 extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return numOfMainSchedule
+		return mainSchedule.count + 1
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "MainScheduleCell", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: "CreateJourneyTableViewCell", for: indexPath)
+		
+		if indexPath.row == mainSchedule.count, let mainScheduleCell = cell as? CreateJourneyTableViewCell {
+			self.startDateButton = mainScheduleCell.startDateButton
+			self.endDateButton = mainScheduleCell.endDateButton
+			self.addScheduleButton = mainScheduleCell.addScheduleButton
+		
+			self.startDateButton?.isEnabled = false
+			self.endDateButton?.isEnabled = false
+			self.addScheduleButton?.isEnabled = false
+		}
+		
 		return cell
 	}
 }
@@ -84,7 +142,56 @@ extension CreateJourneyViewController: UITextFieldDelegate {
 extension CreateJourneyViewController: MapViewControllerDelegate {
 	
 	func didSelectedLocation(_ placemark: MKPlacemark) {
+		self.selectedLocation = placemark
 		let location: String = JourneyAddress.parseAddress(placemark)
-		self.activeLocationButton?.setTitle(location, for: .normal)
+		self.activeButton?.setTitle(location, for: .normal)
+		self.startDateButton?.isEnabled = true
+	}
+}
+
+// MARK: - Implement method of CalendarViewControllerDelegate
+
+extension CreateJourneyViewController: CalendarViewControllerDelegate {
+	
+	func completeToSelectingDate(date: Date) {
+		if let tag = self.activeButton?.tag {
+			switch tag {
+			case 1:
+				// Start date button
+				self.selectedStartDate = date
+				self.endDateButton?.isEnabled = true
+				
+			case 2:
+				// End date button
+				self.selectedEndDate = date
+				self.addScheduleButton?.isEnabled = true
+				
+			default:
+				return
+			}
+		}
+		
+		let selectedDate: String = JourneyDate.formatted(date: date)
+		self.activeButton?.setTitle(selectedDate, for: .normal)
+	}
+}
+
+// MARK: - Create a method to add main schedule to the array
+
+extension CreateJourneyViewController {
+	
+	func appendNewMainSchedule() -> Bool {
+		// Add main schedule to the array
+		if let location = selectedLocation, let startDate = selectedStartDate, let endDate = selectedEndDate {
+			let newSchedule = Schedule(location: location, startDate: startDate, endDate: endDate)
+			self.mainSchedule.append(MainSchedule(schedule: newSchedule, subSchedule: nil))
+			
+			self.selectedLocation = nil
+			self.selectedStartDate = nil
+			self.selectedEndDate = nil
+			return true
+		}
+		
+		return false
 	}
 }
