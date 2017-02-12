@@ -9,8 +9,8 @@
 import UIKit
 import MapKit
 
-// FIXME: Change this view controller to UITableViewController (some day...)
 // FIXME: Induce users to add main schedules sequentially according to the date
+
 
 protocol CreateJourneyViewControllerDelegate {
 	func finishCreatingNewJourney()
@@ -40,6 +40,7 @@ class CreateJourneyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		journeyTitle.delegate = self
+		navigationItem.rightBarButtonItem?.isEnabled = false
     }
 	
 	// Search location from default map
@@ -76,17 +77,13 @@ class CreateJourneyViewController: UIViewController {
 			self.present(navController, animated: true, completion: nil)
 		}
 	}
-	
-	// Add another main schedule
-	@IBAction func addMainSchedule(_ sender: UIButton) {
-		sender.isHidden = true
-		if appendNewMainSchedule() { tableView.reloadData() }
-	}
 
 	// MARK: - Complete creation of Journey data or cancel it
 	
 	@IBAction func doneCreation(_ sender: Any) {
-		if appendNewMainSchedule(), let delegate = self.delegate {
+		appendNewMainSchedule()
+		
+		if self.mainSchedule.count > 0, let delegate = self.delegate {
 			// If there's main schedule
 			let journeyStartDate: Date = (self.mainSchedule.first?.schedule.startDate)!
 			let journeyEndDate: Date = (self.mainSchedule.last?.schedule.endDate)!
@@ -118,11 +115,9 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 		if indexPath.row == mainSchedule.count, let mainScheduleCell = cell as? CreateJourneyTableViewCell {
 			self.startDateButton = mainScheduleCell.startDateButton
 			self.endDateButton = mainScheduleCell.endDateButton
-			self.addScheduleButton = mainScheduleCell.addScheduleButton
 		
 			self.startDateButton?.isEnabled = false
 			self.endDateButton?.isEnabled = false
-			self.addScheduleButton?.isEnabled = false
 		}
 		
 		return cell
@@ -164,7 +159,9 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 			case 2:
 				// End date button
 				self.selectedEndDate = date
-				self.addScheduleButton?.isEnabled = true
+				appendNewMainSchedule()
+				self.tableView.reloadData()
+				self.navigationItem.rightBarButtonItem?.isEnabled = true
 				
 			default:
 				return
@@ -180,7 +177,7 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 
 extension CreateJourneyViewController {
 	
-	func appendNewMainSchedule() -> Bool {
+	func appendNewMainSchedule() {
 		// Add main schedule to the array
 		if let location = selectedLocation, let startDate = selectedStartDate, let endDate = selectedEndDate {
 			let newSchedule = Schedule(location: location, startDate: startDate, endDate: endDate)
@@ -189,9 +186,6 @@ extension CreateJourneyViewController {
 			self.selectedLocation = nil
 			self.selectedStartDate = nil
 			self.selectedEndDate = nil
-			return true
 		}
-		
-		return false
 	}
 }

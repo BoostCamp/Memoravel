@@ -15,4 +15,6 @@ struct MainSchedule {
 	
 	var schedule: Schedule
 	var subSchedule: [Schedule]?
+	
+	// TODO: What do you think of cache assets to the array
 }

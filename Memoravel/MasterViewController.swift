@@ -8,13 +8,19 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UIViewController {
 	
 	let journeyController: JourneyController = JourneyController.shared
 
+	
+	@IBOutlet weak var initialView: UIView!
+	@IBOutlet weak var tableView: UITableView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.tableView.separatorStyle = .none
+		
+		self.tableView.delegate = self
+		self.tableView.dataSource = self
 		
 		// Settings for rightBarButton
 		let addButton = UIButton(type: .custom)
@@ -28,27 +34,10 @@ class MasterViewController: UITableViewController {
 	
 	// MARK: - Implement methods of UITableViewDataSource
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return journeyController.count
-	}
-	
-	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "JourneyCell", for: indexPath)
-		
-		if let masterCell = cell as? MasterTableViewCell {
-			let journey: Journey = journeyController.getJourney(at: indexPath.row)
-			masterCell.titleLabel.text = journey.title
-			masterCell.dateLabel.text = JourneyDate.formatted(date: journey.startDate) + " - " + JourneyDate.formatted(date: journey.endDate)
-			masterCell.thumbnailImageView.image = journey.thumbnailImage
-			masterCell.tintColor = UIColor.journeyLightColor
-		}
-		
-		return cell
-	}
 	
 	// MARK: - Implement method of UITableViewDelegate
 	
-	// TODO: 테이블 셀이 눌렸을 때, ScheduleViewController 로 넘어가게 만들기
+	// TODO: Push ScheduleViewController when user clicks a cell
 
 	// MARK: - Action method when user wants to make a new journey
 	
@@ -65,10 +54,48 @@ class MasterViewController: UITableViewController {
 	}
 }
 
+extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return journeyController.count
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "JourneyCell", for: indexPath)
+		
+		if let masterCell = cell as? MasterTableViewCell {
+			let journey: Journey = journeyController.getJourney(at: indexPath.row)
+			masterCell.journeyTitle.text = journey.title
+			masterCell.journeyDate.text = JourneyDate.formatted(date: journey.startDate) + " - " + JourneyDate.formatted(date: journey.endDate)
+			masterCell.thumbnailImageView.image = journey.thumbnailImage
+			masterCell.tintColor = UIColor.journeyLightColor
+		}
+		
+		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		performSegue(withIdentifier: "ToScheduleViewController", sender: indexPath.row)
+		tableView.deselectRow(at: indexPath, animated: false)
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		let index: Int = sender! is Int ? sender as! Int : 0
+		if let controller = segue.destination as? ScheduleViewController {			
+			controller.indexOfJourney = index
+		}
+	}
+
+}
+
 extension MasterViewController: CreateJourneyViewControllerDelegate {
 	
 	func finishCreatingNewJourney() {
 		tableView.reloadData()
+		
+		if journeyController.count > 0 {
+			self.initialView.isHidden = true
+		}
 	}
 }
 

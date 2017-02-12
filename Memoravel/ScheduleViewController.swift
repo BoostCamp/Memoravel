@@ -10,26 +10,51 @@ import UIKit
 
 class ScheduleViewController: UIViewController {
 
+	let journeyController: JourneyController = JourneyController.shared
+	var indexOfJourney: Int!
+	var journey: Journey!
+	
+	@IBOutlet weak var tableView: UITableView!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Set the delegate and dataSource of UITableView
+		self.tableView.delegate = self
+		self.tableView.dataSource = self
+		
+		// Assign journey instance
+		self.journey = journeyController.getJourney(at: indexOfJourney)
+		
+		// Set navigation title
+		self.navigationItem.title = self.journey.title
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+}
 
-    /*
-    // MARK: - Navigation
+// MARK: - Implement methods of UITableViewDataSource, UITableViewDelegate
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return self.journey.mainSchedule.count
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleCell", for: indexPath)
+		
+		if let scheduleCell = cell as? SchedulesTableViewCell {
+			let mainSchedule = journey.mainSchedule[indexPath.row]
+			let startDate: String = JourneyDate.formatted(date: mainSchedule.schedule.startDate)
+			let endDate: String = JourneyDate.formatted(date: mainSchedule.schedule.endDate)
+			scheduleCell.dateLabel.text = startDate + " - " + endDate
+			scheduleCell.locationLabel.text = JourneyAddress.parseAddress(mainSchedule.schedule.location)
+		}
+		
+		return cell
+	}
 }

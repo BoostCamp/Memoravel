@@ -6,6 +6,9 @@
 //  Copyright © 2017 Boostcamp. All rights reserved.
 //
 
+// TODO: Automatically show annotation on the pin when user selects a location
+// TODO: Show location result at the bottom
+
 import UIKit
 import MapKit
 
@@ -80,10 +83,10 @@ extension MapViewController : CLLocationManagerDelegate {
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-		guard let location = locations.first else { return }
-		let span = MKCoordinateSpanMake(0.05, 0.05)
-		let region = MKCoordinateRegion(center: location.coordinate, span: span)
-		searchMapView.setRegion(region, animated: true)
+//		guard let location = locations.first else { return }
+//		let span = MKCoordinateSpanMake(0.05, 0.05)
+//		let region = MKCoordinateRegion(center: location.coordinate, span: span)
+//		searchMapView.setRegion(region, animated: true)
 	}
 	
 	func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
