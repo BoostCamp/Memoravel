@@ -29,11 +29,6 @@ class ScheduleViewController: UIViewController {
 		// Set navigation title
 		self.navigationItem.title = self.journey.title
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
 
 // MARK: - Implement methods of UITableViewDataSource, UITableViewDelegate
@@ -51,10 +46,22 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
 			let mainSchedule = journey.mainSchedule[indexPath.row]
 			let startDate: String = JourneyDate.formatted(date: mainSchedule.schedule.startDate)
 			let endDate: String = JourneyDate.formatted(date: mainSchedule.schedule.endDate)
+			
 			scheduleCell.dateLabel.text = startDate + " - " + endDate
-			scheduleCell.locationLabel.text = JourneyAddress.parseAddress(mainSchedule.schedule.location)
+			scheduleCell.locationLabel.text = JourneyAddress.parseDetailAddress(mainSchedule.schedule.location)
+			scheduleCell.tapAction = { (scheduleCell) in
+				let dates: (Date, Date) = (mainSchedule.schedule.startDate, mainSchedule.schedule.endDate)
+				self.performSegue(withIdentifier: "ShowAssetView", sender: dates)
+			}
 		}
 		
 		return cell
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let controller = segue.destination as? AssetViewController, let dates: (startDate: Date, endDate: Date) = sender as? (Date, Date) {
+			controller.startDate = dates.startDate
+			controller.endDate = dates.endDate
+		}
 	}
 }

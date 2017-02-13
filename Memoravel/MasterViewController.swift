@@ -31,13 +31,6 @@ class MasterViewController: UIViewController {
 		let addBarButton = UIBarButtonItem(customView: addButton)
 		navigationItem.rightBarButtonItem = addBarButton
 	}
-	
-	// MARK: - Implement methods of UITableViewDataSource
-	
-	
-	// MARK: - Implement method of UITableViewDelegate
-	
-	// TODO: Push ScheduleViewController when user clicks a cell
 
 	// MARK: - Action method when user wants to make a new journey
 	
@@ -53,6 +46,8 @@ class MasterViewController: UIViewController {
 		}
 	}
 }
+
+// MARK: - Implement methods of UITableViewDelegate and UITableViewDataSource
 
 extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 	
@@ -87,6 +82,9 @@ extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 
 }
+
+// MARK: - Implement method of CreateJourneyViewControllerDelegate
+// NOTE: This delegate is for check whether there's information or not
 
 extension MasterViewController: CreateJourneyViewControllerDelegate {
 	

@@ -60,7 +60,7 @@ extension LocationSearchTable {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "SearchResultCell")!
 		let selectedItem = matchingItems[indexPath.row].placemark
 		cell.textLabel?.text = selectedItem.name
-		cell.detailTextLabel?.text = JourneyAddress.parseAddress(selectedItem)
+		cell.detailTextLabel?.text = JourneyAddress.parseDetailAddress(selectedItem)
 		return cell
 	}
 }

@@ -6,8 +6,7 @@
 //  Copyright © 2017 Boostcamp. All rights reserved.
 //
 
-// TODO: Automatically show annotation on the pin when user selects a location
-// TODO: Show location result at the bottom
+// TODO: keyboard automatically appears when Map view page is showing up
 
 import UIKit
 import MapKit
@@ -55,6 +54,13 @@ class MapViewController: UIViewController {
 		definesPresentationContext = true
 		locationSearchTable.mapView = searchMapView
 		locationSearchTable.delegate = self
+		
+		// WHAT I DID TO SHOWING UP KEYBOARD LAYOUT AUTOMATICALLY
+//		DispatchQueue.main.async {
+//			self.resultSearchController.isActive = true
+//			self.resultSearchController.becomeFirstResponder()
+//			self.resultSearchController.searchBar.becomeFirstResponder()
+//		}
 		
 		// Settings for rightBarButton
 		cancelButton = UIButton(type: .custom)
@@ -120,6 +126,7 @@ extension MapViewController: LocationSearchTableDelegate {
 		}
 		
 		searchMapView.addAnnotation(annotation)
+		searchMapView.selectAnnotation(annotation, animated: true)
 		
 		let span = MKCoordinateSpanMake(0.05, 0.05)
 		let region = MKCoordinateRegionMake(placemark.coordinate, span)
@@ -170,6 +177,10 @@ extension MapViewController: UISearchControllerDelegate {
 		navigationItem.rightBarButtonItem = nil
 	}
 	
+//	func didPresentSearchController(_ searchController: UISearchController) {
+//		searchController.searchBar.becomeFirstResponder()
+//	}
+	
 	func willDismissSearchController(_ searchController: UISearchController) {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)
 		
@@ -184,4 +195,3 @@ extension MapViewController: UISearchControllerDelegate {
 		}
 	}
 }
-

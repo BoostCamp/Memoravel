@@ -10,11 +10,13 @@ import UIKit
 
 class SchedulesTableViewCell: UITableViewCell {
 
+	var tapAction: ((UITableViewCell) -> Void)?
+	
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var locationLabel: UILabel!
 	
 	@IBAction func showAssets(_ sender: Any) {
-		
+		tapAction?(self)
 	}
 	
     override func awakeFromNib() {

@@ -138,7 +138,7 @@ extension CreateJourneyViewController: MapViewControllerDelegate {
 	
 	func didSelectedLocation(_ placemark: MKPlacemark) {
 		self.selectedLocation = placemark
-		let location: String = JourneyAddress.parseAddress(placemark)
+		let location: String = JourneyAddress.parseBriefAddress(placemark)
 		self.activeButton?.setTitle(location, for: .normal)
 		self.startDateButton?.isEnabled = true
 	}

@@ -11,6 +11,7 @@ import FSCalendar
 import Photos
 
 // TODO: Create navigation controller to navigate from start date view to end date view sequentially
+// TODO: Show dialogue when user choose wrong date
 
 protocol CalendarViewControllerDelegate {
 	func completeToSelectingDate(date: Date)
