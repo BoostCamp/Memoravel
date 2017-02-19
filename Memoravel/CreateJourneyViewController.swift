@@ -31,7 +31,6 @@ class CreateJourneyViewController: UIViewController {
 	var selectedLocation: MKPlacemark?
 	var selectedStartDate: Date?
 	var selectedEndDate: Date?
-	var lastSelectedDate: Date?
 	
 	// Check whether the cell is about to delete
 	var isEditingCell: Bool = false
@@ -73,13 +72,29 @@ class CreateJourneyViewController: UIViewController {
 			switch sender.tag {
 			// If the user clicks start date button
 			case 1:
-				if let lastEndDate = self.lastSelectedDate {
-					controller.startDate = lastEndDate
+				let contentView = sender.superview
+				if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+					let indexPath = self.tableView.indexPath(for: scheduleCell)!
+					
+					// If this schedule has a previous schedule
+					if indexPath.row > 0 {
+						controller.startDate = self.schedules[indexPath.row - 1].endDate
+					}
 				}
 				
 			case 2:
 				// If the user clicks end date button
-				controller.startDate = self.selectedStartDate
+				let contentView = sender.superview
+				if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+					let indexPath = self.tableView.indexPath(for: scheduleCell)!
+					
+					if indexPath.row == self.schedules.count {
+						controller.startDate = self.selectedStartDate
+					
+					} else {
+						controller.startDate = self.schedules[indexPath.row].startDate
+					}
+				}
 				
 			default:
 				return
@@ -204,14 +219,6 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 		let alertController = UIAlertController(title: "Delete schedule", message: "Are you sure you want to delete this schedule?", preferredStyle: .actionSheet)
 		
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
-			// If the cell which is going to be deleted is first row
-			if indexPath.row == 0 {
-				self.selectedEndDate = nil
-			
-			} else if (indexPath.row + 1) == self.schedules.count {
-				self.selectedEndDate = self.schedules[indexPath.row - 1].endDate
-			}
-			
 			self.schedules.remove(at: indexPath.row)
 			self.tableView.deleteRows(at: [indexPath], with: .automatic)
 			self.tableView.reloadData()
@@ -249,16 +256,14 @@ extension CreateJourneyViewController: UITextFieldDelegate {
 extension CreateJourneyViewController: MapViewControllerDelegate {
 	
 	func didSelectedLocation(_ placemark: MKPlacemark) {
-		// Change current selected button title
-//		self.activeButton?.setTitle(JourneyAddress.parseBriefAddress(placemark), for: .normal)
-		
 		let contentView = self.activeButton?.superview
 		if let currentCell = contentView?.superview as? CreateScheduleCell {
 			if let startDate = currentCell.startDateButton.title(for: .normal), let endDate = currentCell.endDateButton.title(for: .normal), (startDate != "Choose a Start Date" && endDate != "Choose an End Date") {
-				// If the user wants to change the location, update schedules cell
+				
+				// If the user wants to change the location, update schedules array
 				let indexPath = self.tableView.indexPath(for: currentCell)!
 				self.schedules[indexPath.row].location = placemark
-				print("location has been changed!")
+				print("Location has been changed!")
 			
 			} else {
 				self.selectedLocation = placemark
@@ -277,18 +282,47 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 		if let tag = self.activeButton?.tag {
 			switch tag {
 			case 1:
-				// Start date button
-				self.selectedStartDate = date
-				self.activeButton?.setTitle(JourneyDate.formatted(date: date), for: .normal)
-				self.currentEndDateButton?.isEnabled = true
+				// Start Date button
+				let contentView = self.activeButton?.superview
+				if let currentCell = contentView?.superview as? CreateScheduleCell {
+					let indexPath = self.tableView.indexPath(for: currentCell)!
+					
+					// If the user wants to change the start date, update schedules array
+					if indexPath.row < self.schedules.count {
+						self.schedules[indexPath.row].startDate = date
+						print("Start Date has been changed!")
+						
+						// Synchronize date
+						self.synchronizeDates(from: self.activeButton!)
+						
+					// Start date of the new schedule
+					} else {
+						self.selectedStartDate = date
+						self.currentEndDateButton?.isEnabled = true
+					}
+				}
 				
 			case 2:
-				// End date button
-				self.selectedEndDate = date
-				self.lastSelectedDate = date
-				self.activeButton?.setTitle(JourneyDate.formatted(date: date), for: .normal)
-				self.addScheduleButton?.isEnabled = true
-				self.navigationItem.rightBarButtonItem?.isEnabled = true
+				// End Date button
+				let contentView = self.activeButton?.superview
+				if let currentCell = contentView?.superview as? CreateScheduleCell {
+					let indexPath = self.tableView.indexPath(for: currentCell)!
+					
+					// If the user wants to change the end date, update schedules array
+					if indexPath.row < self.schedules.count {
+						self.schedules[indexPath.row].endDate = date
+						print("End Date has been changed!")
+						
+						// Synchronize date
+						self.synchronizeDates(from: self.activeButton!)
+					
+					// End date of the new schedule
+					} else {
+						self.selectedEndDate = date
+						self.navigationItem.rightBarButtonItem?.isEnabled = true
+						self.addScheduleButton?.isEnabled = true
+					}
+				}
 				
 			default:
 				return
@@ -296,6 +330,47 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 		}
 		
 		self.tableView.reloadData()
+	}
+	
+	// Synchronize dates if the end date is not after the start date
+	func synchronizeDates(from sender: UIButton) {
+		let contentView = sender.superview
+		if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+			var indexPath: IndexPath = self.tableView.indexPath(for: scheduleCell)!
+			var currentRow: Int = indexPath.row
+			
+			while currentRow < self.schedules.count {
+				var startDate: Date = self.schedules[currentRow].startDate
+				var endDate: Date = self.schedules[currentRow].endDate
+				
+				if startDate > endDate {
+					endDate = startDate
+					self.schedules[currentRow].endDate = endDate
+				}
+				
+				currentRow += 1
+				if currentRow < self.schedules.count {
+					startDate = self.schedules[currentRow].startDate
+					
+					if endDate > startDate {
+						self.schedules[currentRow].startDate = endDate
+					}
+				}
+			}
+			
+			// Initialize start date and end date of editing cell
+			if let editingStartDate = self.selectedStartDate {
+				if editingStartDate < self.schedules[currentRow - 1].endDate {
+					self.selectedStartDate = nil
+				}
+				
+				if self.selectedStartDate == nil {
+					self.selectedEndDate = nil
+				}
+			}
+			
+			self.tableView.reloadData()
+		}
 	}
 }
 
