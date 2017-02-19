@@ -10,13 +10,37 @@ import Foundation
 import UIKit
 
 /**
-여행 정보를 저장하는 가장 기본이 되는 데이터 구조입니다.
+Save Journey data - This is the main data structure of this project
 */
-struct Journey {
+class Journey {
 	
 	var title: String
 	var startDate: Date
 	var endDate: Date
-	var mainSchedule: [MainSchedule]
+	var schedules: [Schedule]
 	var thumbnailImage: UIImage?
+	var isFetchedAsset: Bool = false
+	
+	init(title: String, startDate: Date, endDate: Date, schedules: [Schedule]) {
+		self.title = title
+		self.startDate = startDate
+		self.endDate = endDate
+		self.schedules = schedules
+	}
+	
+	var numOfSchedules: Int {
+		return self.schedules.count
+	}
+	
+	func addNewSchedule(_ schedule: Schedule) {
+		self.schedules.append(schedule)
+	}
+	
+	func getSchedule(of index: Int) -> Schedule {
+		return self.schedules[index]
+	}
+	
+	func removeSchedule(of index: Int) {
+		self.schedules.remove(at: index)
+	}
 }

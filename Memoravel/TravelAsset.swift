@@ -11,14 +11,25 @@ import Photos
 import CoreLocation
 
 /**
-여행 사진 또는 동영상 정보를 저장하는 데이터 구조입니다.
+Save PHAsset and relative information
 */
-struct TravelAsset {
+class TravelAsset: Hashable {
 	
 	var asset: PHAsset
-	var creationDate: Date
-	var creationLocation: CLLocation
-	
-	var isLike: Bool = false
+	var isLike: Bool
 	var comment: String?
+	
+	init(asset: PHAsset, isLike: Bool = false, comment: String? = nil) {
+		self.asset = asset
+		self.isLike = isLike
+		self.comment = comment
+	}
+	
+	var hashValue: Int {
+		return self.asset.hashValue
+	}
+	
+	static func == (lhs: TravelAsset, rhs: TravelAsset) -> Bool {
+		return lhs.asset == rhs.asset
+	}
 }

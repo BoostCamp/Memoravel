@@ -22,8 +22,7 @@ class MapViewController: UIViewController {
 	var selectedPin: MKPlacemark?
 	var delegate: MapViewControllerDelegate?
 	var cancelButton: UIButton!
-	
-	// FIXME: Can uerinputText property change into operational property?
+
 	var userInputText: String?
 	
 	@IBOutlet weak var searchMapView: MKMapView!
@@ -45,7 +44,7 @@ class MapViewController: UIViewController {
 		// Settings for search bar
 		let searchBar = resultSearchController!.searchBar
 		searchBar.sizeToFit()
-		searchBar.placeholder = "Search for places where you visited"
+		searchBar.placeholder = "Search for a place or address"
 		searchBar.returnKeyType = .search
 		navigationItem.titleView = resultSearchController?.searchBar
 		
@@ -54,13 +53,6 @@ class MapViewController: UIViewController {
 		definesPresentationContext = true
 		locationSearchTable.mapView = searchMapView
 		locationSearchTable.delegate = self
-		
-		// WHAT I DID TO SHOWING UP KEYBOARD LAYOUT AUTOMATICALLY
-//		DispatchQueue.main.async {
-//			self.resultSearchController.isActive = true
-//			self.resultSearchController.becomeFirstResponder()
-//			self.resultSearchController.searchBar.becomeFirstResponder()
-//		}
 		
 		// Settings for rightBarButton
 		cancelButton = UIButton(type: .custom)
@@ -176,10 +168,6 @@ extension MapViewController: UISearchControllerDelegate {
 	func willPresentSearchController(_ searchController: UISearchController) {
 		navigationItem.rightBarButtonItem = nil
 	}
-	
-//	func didPresentSearchController(_ searchController: UISearchController) {
-//		searchController.searchBar.becomeFirstResponder()
-//	}
 	
 	func willDismissSearchController(_ searchController: UISearchController) {
 		navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cancelButton)

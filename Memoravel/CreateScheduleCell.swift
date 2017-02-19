@@ -1,5 +1,5 @@
 //
-//  CreateJourneyTableViewCell.swift
+//  CreateScheduleCell.swift
 //  Memoravel
 //
 //  Created by JUNYEONG.YOO on 2/8/17.
@@ -8,17 +8,17 @@
 
 import UIKit
 
-class CreateJourneyTableViewCell: UITableViewCell {
-
+class CreateScheduleCell: UITableViewCell {
+	
+	var addNewCellAction: (() -> Void)?
+	
 	@IBOutlet weak var backgroundCardView: UIView!
 	@IBOutlet weak var locationButton: UIButton!
 	@IBOutlet weak var startDateButton: UIButton!
 	@IBOutlet weak var endDateButton: UIButton!
-	@IBOutlet weak var initialView: UIView!
 	
-	@IBAction func addNewSchedule(_ sender: Any) {
-		self.initialView.isHidden = true
-	}
+	@IBOutlet weak var initialView: UIView!
+	@IBOutlet weak var addButton: UIButton!
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,4 +33,10 @@ class CreateJourneyTableViewCell: UITableViewCell {
 		backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 0)
 		backgroundCardView.layer.shadowOpacity = 0.8
     }
+	
+	@IBAction func addNewSchedule(_ sender: Any) {
+		if let action = self.addNewCellAction {
+			action()
+		}
+	}
 }

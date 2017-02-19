@@ -17,7 +17,7 @@ class JourneyDate {
 	
 	// Convert Date data to String
 	static func formatted(date: Date) -> String {
-		dateFormatter.dateFormat = "yy.MM.dd"
+		dateFormatter.dateFormat = "yyyy.MM.dd"
 		return dateFormatter.string(from: date)
 	}
 }

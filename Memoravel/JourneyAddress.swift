@@ -11,6 +11,11 @@ import MapKit
 
 class JourneyAddress {
 	
+	// Parse MKPlacemark for title of Asset View
+	class func parseTitleAddress(_ selectedItem: MKPlacemark) -> String? {
+		return selectedItem.locality
+	}
+	
 	// Parse MKPlacemark to brief address
 	class func parseBriefAddress(_ selectedItem: MKPlacemark) -> String {
 		

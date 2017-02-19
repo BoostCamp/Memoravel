@@ -23,25 +23,33 @@ class CalendarViewController: UIViewController {
 	var selectedDate: Date?
 	var senderTag: Int?
 	var startDate: Date?
+	
 	var selectedPhotos: PHFetchResult<PHAsset>?
 	
+	@IBOutlet weak var calendar: FSCalendar!
 	@IBOutlet weak var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+//		self.calendar.select(self.selectedDate, scrollToDate: true)
+		
 		// Settings for Navigation title
 		if let tag = senderTag {
 			switch tag {
 			case 1:
-				navigationItem.title = "Choose Start Date"
+				navigationItem.title = "Select a Start Date"
 				
 			case 2:
-				navigationItem.title = "Choose End Date"
+				navigationItem.title = "Select an End Date"
 				
 			default:
 				return
 			}
+		}
+		
+		if let date = self.startDate {
+			self.calendar.currentPage = date
 		}
 		
 		collectionView.delegate = self
@@ -75,24 +83,21 @@ extension CalendarViewController: FSCalendarDataSource, FSCalendarDelegate {
 		self.collectionView.reloadData()
 		
 		// TODO: What does this code mean?
-		self.collectionView.collectionViewLayout.invalidateLayout()
+//		self.collectionView.collectionViewLayout.invalidateLayout()
 	}
 	
-	// FIXME: Set the minimum and maximum dates after update
-	
-//	func minimumDate(for calendar: FSCalendar) -> Date {
-//		if let startDate = self.startDate {
-//			return startDate
-//		}
-//		
-//		return Date(timeIntervalSince1970: 0)
-//	}
+	func minimumDate(for calendar: FSCalendar) -> Date {
+		if let startDate = self.startDate {
+			return startDate
+		}
+		
+		return Date(timeIntervalSince1970: 0)
+	}
 	
 	// Set maximum date to current date, so user could not choose future dates
-//	func maximumDate(for calendar: FSCalendar) -> Date {
-//		return calendar.today ?? Date()
-//	}
-	
+	func maximumDate(for calendar: FSCalendar) -> Date {
+		return calendar.today ?? Date()
+	}
 }
 
 // MARK: - Implement methods of UICollectionViewDelegate and UICollectionViewDataSource

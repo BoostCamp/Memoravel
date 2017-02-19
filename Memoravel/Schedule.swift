@@ -10,12 +10,19 @@ import Foundation
 import MapKit
 
 /**
-일정 정보를 저장하는 데이터 구조입니다.
-- Main schedule 및 Sub schedule 에서 사용합니다.
+Save schedules of a Journey
 */
-struct Schedule {
+class Schedule {
 	
 	var location: MKPlacemark
 	var startDate: Date
 	var endDate: Date
+	var assetsDict: [Date : [TravelAsset]]
+	
+	init(location: MKPlacemark, startDate: Date, endDate: Date, assets: [Date : [TravelAsset]]) {
+		self.location = location
+		self.startDate = startDate
+		self.endDate = endDate
+		self.assetsDict = assets
+	}
 }

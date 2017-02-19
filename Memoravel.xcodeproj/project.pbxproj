@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */; };
+		CC312FBB1E583A020099A6BC /* PlayImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */; };
+		CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBC1E5849400099A6BC /* DateExtension.swift */; };
 		CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3356471E4CADE300C58493 /* CalendarViewController.swift */; };
 		CC33564C1E4D91F600C58493 /* FSCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC33564B1E4D91F600C58493 /* FSCalendar.framework */; };
 		CC33566C1E4F48ED00C58493 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC33566B1E4F48ED00C58493 /* CalendarCollectionViewCell.swift */; };
@@ -23,16 +26,14 @@
 		CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */; };
 		CCB2C1D81E4A169B0060FFB6 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */; };
 		CCB2C1DA1E4A17F90060FFB6 /* CreateJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */; };
-		CCB2C1DC1E4A19390060FFB6 /* AddSubScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */; };
 		CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */; };
-		CCB2C1E41E4AB3CB0060FFB6 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */; };
-		CCB2C1E61E4AB45A0060FFB6 /* MainSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */; };
+		CCB2C1E61E4AB45A0060FFB6 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E51E4AB45A0060FFB6 /* Schedule.swift */; };
 		CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */; };
 		CCB2C1EB1E4ADE330060FFB6 /* MasterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1EA1E4ADE330060FFB6 /* MasterTableViewCell.swift */; };
 		CCB2C1EE1E4AE0490060FFB6 /* JourneyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1ED1E4AE0490060FFB6 /* JourneyController.swift */; };
 		CCB2C1F11E4AE6120060FFB6 /* JourneyDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F01E4AE6120060FFB6 /* JourneyDate.swift */; };
 		CCB2C1F31E4AE8850060FFB6 /* JourneyColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */; };
-		CCB2C1F51E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F41E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift */; };
+		CCB2C1F51E4AF9900060FFB6 /* CreateScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F41E4AF9900060FFB6 /* CreateScheduleCell.swift */; };
 		CCD348D31E512BD3004BC8F0 /* AssetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */; };
 		CCDB21E51E4C9A8400D73647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCDB21E31E4C9A8400D73647 /* Main.storyboard */; };
 		DB244AF3DBEA28BF634C0EDC /* Pods_Memoravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */; };
@@ -40,6 +41,9 @@
 
 /* Begin PBXFileReference section */
 		6D8B660C73D09763ADC01E11 /* Pods-Memoravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.debug.xcconfig"; sourceTree = "<group>"; };
+		CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayJourneyViewController.swift; sourceTree = "<group>"; };
+		CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		CC312FBC1E5849400099A6BC /* DateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		CC3356471E4CADE300C58493 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		CC33564B1E4D91F600C58493 /* FSCalendar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FSCalendar.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Memoravel-gylfyatxkxbccdfmkbsdrplcjrbf/Build/Products/Debug-iphoneos/FSCalendar/FSCalendar.framework"; sourceTree = "<group>"; };
 		CC33566B1E4F48ED00C58493 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -58,16 +62,14 @@
 		CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetViewController.swift; sourceTree = "<group>"; };
 		CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateJourneyViewController.swift; sourceTree = "<group>"; };
-		CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSubScheduleViewController.swift; sourceTree = "<group>"; };
 		CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelAsset.swift; sourceTree = "<group>"; };
-		CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
-		CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSchedule.swift; sourceTree = "<group>"; };
+		CCB2C1E51E4AB45A0060FFB6 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Journey.swift; sourceTree = "<group>"; };
 		CCB2C1EA1E4ADE330060FFB6 /* MasterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterTableViewCell.swift; sourceTree = "<group>"; };
 		CCB2C1ED1E4AE0490060FFB6 /* JourneyController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyController.swift; sourceTree = "<group>"; };
 		CCB2C1F01E4AE6120060FFB6 /* JourneyDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyDate.swift; sourceTree = "<group>"; };
 		CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyColor.swift; sourceTree = "<group>"; };
-		CCB2C1F41E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateJourneyTableViewCell.swift; sourceTree = "<group>"; };
+		CCB2C1F41E4AF9900060FFB6 /* CreateScheduleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateScheduleCell.swift; sourceTree = "<group>"; };
 		CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCollectionViewCell.swift; sourceTree = "<group>"; };
 		CCDB21E41E4C9A8400D73647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Memoravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,14 +143,14 @@
 			isa = PBXGroup;
 			children = (
 				CCB2C1C31E4A0A920060FFB6 /* MasterViewController.swift */,
-				CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */,
-				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
-				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
 				CCB2C1D91E4A17F90060FFB6 /* CreateJourneyViewController.swift */,
-				CCB2C1DB1E4A19390060FFB6 /* AddSubScheduleViewController.swift */,
 				CCB265E61E4BE65C00C35E7B /* MapViewController.swift */,
 				CCB265E81E4BEA7D00C35E7B /* LocationSearchTable.swift */,
 				CC3356471E4CADE300C58493 /* CalendarViewController.swift */,
+				CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */,
+				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
+				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
+				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -157,8 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				CCB2C1E11E4AB35B0060FFB6 /* TravelAsset.swift */,
-				CCB2C1E31E4AB3CB0060FFB6 /* Schedule.swift */,
-				CCB2C1E51E4AB45A0060FFB6 /* MainSchedule.swift */,
+				CCB2C1E51E4AB45A0060FFB6 /* Schedule.swift */,
 				CCB2C1E71E4AB57C0060FFB6 /* Journey.swift */,
 			);
 			name = Model;
@@ -170,11 +171,12 @@
 				CCB2C1CA1E4A0A920060FFB6 /* LaunchScreen.storyboard */,
 				CCDB21E31E4C9A8400D73647 /* Main.storyboard */,
 				CCB2C1EA1E4ADE330060FFB6 /* MasterTableViewCell.swift */,
-				CCB2C1F41E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift */,
+				CCB2C1F41E4AF9900060FFB6 /* CreateScheduleCell.swift */,
 				CC33566B1E4F48ED00C58493 /* CalendarCollectionViewCell.swift */,
 				CC33566D1E5071B500C58493 /* SchedulesTableViewCell.swift */,
 				CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */,
 				CC4706351E5160E4005B4277 /* AssetHeaderCollectionReusableView.swift */,
+				CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -193,6 +195,7 @@
 				CCB2C1F01E4AE6120060FFB6 /* JourneyDate.swift */,
 				CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */,
 				CCB265EA1E4C8E9500C35E7B /* JourneyAddress.swift */,
+				CC312FBC1E5849400099A6BC /* DateExtension.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -333,17 +336,19 @@
 				CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */,
 				CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */,
 				CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */,
+				CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */,
 				CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */,
+				CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */,
 				CCB265E91E4BEA7D00C35E7B /* LocationSearchTable.swift in Sources */,
 				CCB2C1EB1E4ADE330060FFB6 /* MasterTableViewCell.swift in Sources */,
-				CCB2C1E61E4AB45A0060FFB6 /* MainSchedule.swift in Sources */,
+				CCB2C1E61E4AB45A0060FFB6 /* Schedule.swift in Sources */,
 				CCB2C1C41E4A0A920060FFB6 /* MasterViewController.swift in Sources */,
 				CCB2C1D81E4A169B0060FFB6 /* DetailViewController.swift in Sources */,
-				CCB2C1F51E4AF9900060FFB6 /* CreateJourneyTableViewCell.swift in Sources */,
-				CCB2C1DC1E4A19390060FFB6 /* AddSubScheduleViewController.swift in Sources */,
+				CCB2C1F51E4AF9900060FFB6 /* CreateScheduleCell.swift in Sources */,
 				CCB265EB1E4C8E9500C35E7B /* JourneyAddress.swift in Sources */,
 				CCB2C1F31E4AE8850060FFB6 /* JourneyColor.swift in Sources */,
 				CC4706361E5160E4005B4277 /* AssetHeaderCollectionReusableView.swift in Sources */,
+				CC312FBB1E583A020099A6BC /* PlayImageCollectionViewCell.swift in Sources */,
 				CCB2C1EE1E4AE0490060FFB6 /* JourneyController.swift in Sources */,
 				CC33566E1E5071B500C58493 /* SchedulesTableViewCell.swift in Sources */,
 				CCB2C1C21E4A0A920060FFB6 /* AppDelegate.swift in Sources */,
@@ -351,7 +356,6 @@
 				CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */,
 				CCB2C1DA1E4A17F90060FFB6 /* CreateJourneyViewController.swift in Sources */,
 				CCB2C1F11E4AE6120060FFB6 /* JourneyDate.swift in Sources */,
-				CCB2C1E41E4AB3CB0060FFB6 /* Schedule.swift in Sources */,
 				CCB265E71E4BE65C00C35E7B /* MapViewController.swift in Sources */,
 				CCD348D31E512BD3004BC8F0 /* AssetCollectionViewCell.swift in Sources */,
 			);

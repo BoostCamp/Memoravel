@@ -25,4 +25,5 @@ extension UIColor {
 	class var journeyMainColor: UIColor { return UIColor(netHex: 0x424B5C) }
 	class var journeySubColor: UIColor { return UIColor(netHex: 0xA6AEBB) }
 	class var journeyLightColor: UIColor { return UIColor(netHex: 0xF9F9F9) }
+	class var journeyWarningColor: UIColor { return UIColor(netHex: 0xED5836) }
 }

@@ -9,25 +9,33 @@
 import UIKit
 
 class SchedulesTableViewCell: UITableViewCell {
-
-	var tapAction: ((UITableViewCell) -> Void)?
 	
-	@IBOutlet weak var dateLabel: UILabel!
+	@IBOutlet weak var backgroundCardView: UIView!
+	@IBOutlet weak var showLocationButton: UIButton!
 	@IBOutlet weak var locationLabel: UILabel!
+	@IBOutlet weak var dateLabel: UILabel!
 	
-	@IBAction func showAssets(_ sender: Any) {
-		tapAction?(self)
-	}
+	var showLocationAction: ((Int) -> Void)?
 	
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+		
+		// Initialization code
+		backgroundCardView.backgroundColor = UIColor.white
+		backgroundCardView.layer.cornerRadius = 3.0
+		backgroundCardView.layer.masksToBounds = false
+		
+		// Settings for shadow of background view
+		backgroundCardView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
+		backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 0)
+		backgroundCardView.layer.shadowOpacity = 0.8
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+	
+	@IBAction func showLocationOnTheMap(_ sender: Any) {
+//		print("Row # \(self.showLocationButton.tag) is clicked!")
+		
+		if let action = self.showLocationAction {
+			action(self.showLocationButton.tag)
+		}
+	}
 }
