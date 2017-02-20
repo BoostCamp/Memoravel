@@ -61,7 +61,7 @@ class CreateJourneyViewController: UIViewController {
 			navController.navigationBar.barTintColor = UIColor.journeyMainColor
 			navController.navigationBar.tintColor = UIColor.journeyLightColor
 			navController.navigationBar.barStyle = .black
-//			navController.navigationBar.isTranslucent = false
+			navController.navigationBar.isTranslucent = false
 			self.present(navController, animated: true, completion: nil)
 		}
 	}

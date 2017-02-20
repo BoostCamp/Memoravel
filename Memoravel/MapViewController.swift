@@ -28,6 +28,10 @@ class MapViewController: UIViewController {
 	@IBOutlet weak var searchBarContainer: UIView!
 	@IBOutlet weak var searchMapView: MKMapView!
 	
+	override var prefersStatusBarHidden: Bool {
+		return (self.navigationController?.isNavigationBarHidden)!
+	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -59,6 +63,7 @@ class MapViewController: UIViewController {
 		locationSearchTable.delegate = self
 		
 		self.navigationController?.automaticallyAdjustsScrollViewInsets = false
+		self.navigationController?.extendedLayoutIncludesOpaqueBars = true
 		self.automaticallyAdjustsScrollViewInsets = false
 		
 		// FIXME: Do not follow user location
@@ -161,6 +166,14 @@ extension MapViewController: MKMapViewDelegate {
 
 extension MapViewController: UISearchControllerDelegate {
 	
+	func willPresentSearchController(_ searchController: UISearchController) {
+		UIView.animate(withDuration: 0.5) {
+			self.navigationController?.navigationBar.frame.size.height = 0.0
+		}
+		
+		self.navigationController?.isNavigationBarHidden = true
+	}
+	
 	func willDismissSearchController(_ searchController: UISearchController) {
 		if let text = searchController.searchBar.text {
 			userInputText = text
@@ -171,5 +184,11 @@ extension MapViewController: UISearchControllerDelegate {
 		if let text = userInputText {
 			searchController.searchBar.text = text
 		}
+		
+		UIView.animate(withDuration: 0.5) {
+			self.navigationController?.navigationBar.frame.size.height = 44.0
+		}
+		
+		self.navigationController?.isNavigationBarHidden = false
 	}
 }
