@@ -18,6 +18,7 @@ class ScheduleViewController: UIViewController {
 	var polyline: MKGeodesicPolyline?
 	var annotations: [MKPointAnnotation]?
 	
+	@IBOutlet weak var backgroundCardView: UIView!
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var waitView: UIView!
@@ -26,6 +27,16 @@ class ScheduleViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		// Set the background card with with a shadow, so it looks like a card view
+		backgroundCardView.backgroundColor = UIColor.journeyMainColor
+		backgroundCardView.layer.cornerRadius = 3.0
+		backgroundCardView.layer.masksToBounds = false
+		
+		// Settings for shadow of background view
+		backgroundCardView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
+		backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 0)
+		backgroundCardView.layer.shadowOpacity = 0.8
 
         // Set the delegate and dataSource of UITableView
 		self.tableView.delegate = self

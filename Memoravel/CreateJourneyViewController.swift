@@ -42,6 +42,8 @@ class CreateJourneyViewController: UIViewController {
         super.viewDidLoad()
 		journeyTitleTextField.delegate = self
 		navigationItem.rightBarButtonItem?.isEnabled = false
+		
+		self.automaticallyAdjustsScrollViewInsets = false
     }
 	
 	// Search location from default map
@@ -53,7 +55,6 @@ class CreateJourneyViewController: UIViewController {
 			controller.delegate = self
 			
 			let navController = UINavigationController(rootViewController: controller)
-			navController.extendedLayoutIncludesOpaqueBars = false
 			navController.automaticallyAdjustsScrollViewInsets = false
 			navController.edgesForExtendedLayout = UIRectEdge.top
 			

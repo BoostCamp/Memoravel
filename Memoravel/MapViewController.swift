@@ -58,6 +58,9 @@ class MapViewController: UIViewController {
 		locationSearchTable.mapView = searchMapView
 		locationSearchTable.delegate = self
 		
+		self.navigationController?.automaticallyAdjustsScrollViewInsets = false
+		self.automaticallyAdjustsScrollViewInsets = false
+		
 		// FIXME: Do not follow user location
 		searchMapView.userTrackingMode = .none
     }
