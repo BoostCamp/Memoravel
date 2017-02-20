@@ -104,14 +104,6 @@ class DetailViewController: UIViewController {
 	}
 	
 	@IBAction func setAsThumbnail(_ sender: Any) {
-//		if let delegate = self.delegate {
-//			delegate.didSetAsThumbnailImage(image: self.assetImageView.image)
-//			print("setAsThumbnail BUTTON WAS CLICKED")
-//		
-//		} else {
-//			print("DELEGATE WAS NOT SET")
-//		}
-		
 		print("setAsThumbnail BUTTON WAS CLICKED")
 		NotificationCenter.default.post(name: .beAboutToThumbnail, object: self.assetImageView.image)
 	}

@@ -14,6 +14,10 @@ class ScheduleViewController: UIViewController {
 
 	var journey: Journey!
 	
+	// Properties for Map view
+	var polyline: MKGeodesicPolyline?
+	var annotations: [MKPointAnnotation]?
+	
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var waitView: UIView!
@@ -26,9 +30,6 @@ class ScheduleViewController: UIViewController {
         // Set the delegate and dataSource of UITableView
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
-		
-		// Set navigation title
-		self.navigationItem.title = self.journey.title
 		
 		// Generate assets and save it to the data structure
 		DispatchQueue.global().async {
@@ -55,8 +56,17 @@ class ScheduleViewController: UIViewController {
 		
 		// Setting for initial map view
 		self.mapView.delegate = self
-		self.showLocationOfTheSchedule(at: 0)
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		// Set navigation title
+		self.navigationItem.title = self.journey.title
+		
+		// First location to show in the map
+		self.showLocationOfTheSchedule(at: 0)
+	}
 	
 	// MARK: - Method for calling modal view for playing journey schedules
 	
@@ -69,6 +79,20 @@ class ScheduleViewController: UIViewController {
 			navController.navigationBar.tintColor = UIColor.journeyLightColor
 			navController.navigationBar.barStyle = .black
 			
+			self.present(navController, animated: true, completion: nil)
+		}
+	}
+	
+	// Edit Journey schedules
+	@IBAction func editJourneySchedule(_ sender: Any) {
+		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "EditJourneyViewController") as? EditJourneyViewController {
+			controller.journey = self.journey
+			controller.delegate = self
+			
+			let navController = UINavigationController(rootViewController: controller)
+			navController.navigationBar.barTintColor = UIColor.journeyMainColor
+			navController.navigationBar.tintColor = UIColor.journeyLightColor
+			navController.navigationBar.barStyle = .black
 			self.present(navController, animated: true, completion: nil)
 		}
 	}
@@ -110,53 +134,6 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
 			controller.schedule = schedule
 		}
 	}
-	
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		if editingStyle == .delete {
-			confirmDelete(at: indexPath.row)
-		}
-	}
-	
-	func confirmDelete(at index: Int) {
-		let alertController: UIAlertController
-		
-		// Force not to delete when there's only one schedule in the journey
-		if self.journey.schedules.count > 1 {
-			alertController = UIAlertController(
-				title: "Delete main schedule",
-				message: "Are you sure you want to delete this schedule?",
-				preferredStyle: .actionSheet
-			)
-			
-			let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
-				self.journey.removeSchedule(of: index)
-				self.tableView.reloadData()
-				self.dismiss(animated: true, completion: nil)
-			}
-			
-			let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
-				self.dismiss(animated: true, completion: nil)
-			}
-			
-			alertController.addAction(deleteAction)
-			alertController.addAction(cancelAction)
-		
-		} else {
-			alertController = UIAlertController(
-				title: "Cannot delete schedule",
-				message: "You can't delete a schedule when there's only one schedule in the journey",
-				preferredStyle: .alert
-			)
-			
-			let okAction = UIAlertAction(title: "OK", style: .cancel) { (action) in
-				self.dismiss(animated: true, completion: nil)
-			}
-			
-			alertController.addAction(okAction)
-		}
-		
-		self.present(alertController, animated: true, completion: nil)
-	}
 }
 
 // MARK: - Load asset data and save it to the data structure
@@ -166,12 +143,18 @@ extension ScheduleViewController {
 	func saveAssetsToMainSchedule() {
 		
 		// Check whether this method is called twice
-		if self.journey.isFetchedAsset { return }
+//		if self.journey.isFetchedAsset { return }
 		
 		let fetchOption = PHFetchOptions()
 		self.activityView.startAnimating()
 		
 		self.journey.schedules = self.journey.schedules.map {
+			
+			if $0.assetsDict.count != 0 {
+				print("Already have AssetsDict in this schedule")
+				return $0
+			}
+			
 			let startDate = $0.startDate
 			let endDate = $0.endDate
 			var date: Date = startDate
@@ -204,7 +187,7 @@ extension ScheduleViewController {
 		}
 		
 		self.activityView.stopAnimating()
-		self.journey.isFetchedAsset = true
+//		self.journey.isFetchedAsset = true
 	}
 	
 	func performUpdate(_ updates: @escaping() -> Void) {
@@ -234,26 +217,84 @@ extension ScheduleViewController: MKMapViewDelegate {
 		
 		return pinView
 	}
-
 	
 	func showLocationOfTheSchedule(at index: Int) {
-		let schedule: Schedule = self.journey.getSchedule(of: index)
+		var coordinates: [CLLocationCoordinate2D] = self.journey.getCoordinatesOfJourney()
 		
-		let annotation = MKPointAnnotation()
-		let location: MKPlacemark = schedule.location
+		if (self.mapView.annotations.count == 0) && (self.mapView.overlays.count == 0) {
+			var annotations = [MKPointAnnotation]()
+			let schedules: [Schedule] = self.journey.schedules
 		
-		annotation.coordinate = location.coordinate
-		annotation.title = location.name
-		
-		if let city = location.locality, let state = location.administrativeArea, let country = location.country {
-			annotation.subtitle = "\(city) \(state), \(country)"
+			// Append all annotations of the schedules
+			for schedule in schedules {
+				let location: MKPlacemark = schedule.location
+				let annotation = MKPointAnnotation()
+				annotation.coordinate = location.coordinate
+				annotation.title = location.name
+				
+				if let city = location.locality, let state = location.administrativeArea, let country = location.country {
+					annotation.subtitle = "\(city) \(state), \(country)"
+				}
+				
+				annotations.append(annotation)
+				self.annotations = annotations
+			}
+			
+			self.mapView.addAnnotations(annotations)
+
+			// Draw polyline on the map
+			let polyline = MKGeodesicPolyline(coordinates: coordinates, count: coordinates.count)
+			self.mapView.add(polyline)
+			self.polyline = polyline
 		}
 		
-		self.mapView.addAnnotation(annotation)
-		self.mapView.selectAnnotation(annotation, animated: true)
+		// Show annotations automatically on the map
+		self.mapView.selectAnnotation((self.annotations?[index])!, animated: true)
 		
-		let span = MKCoordinateSpanMake(0.05, 0.05)
-		let region = MKCoordinateRegionMake(location.coordinate, span)
+		// Zoom in selected location on the map
+		let span = MKCoordinateSpanMake(2.0, 2.0)
+		let region = MKCoordinateRegionMake(coordinates[index], span)
 		self.mapView.setRegion(region, animated: true)
+	}
+	
+	func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+		if overlay is MKPolyline {
+			let lenderer = MKPolylineRenderer(overlay: overlay);
+			lenderer.strokeColor = UIColor.journeyWarningColor.withAlphaComponent(0.7)
+			lenderer.lineWidth = 5.0
+			return lenderer
+		}
+		
+		return MKOverlayRenderer()
+	}
+}
+
+// MARK: - Implement method of EditJourneyViewControllerDelegate
+
+extension ScheduleViewController: EditJourneyViewControllerDelegate {
+	
+	func finishEditingNewJourney() {
+		self.waitView.isHidden = false
+		
+		// Generate assets and save it to the data structure if the schedule has been changed
+		DispatchQueue.global().async {
+			self.saveAssetsToMainSchedule()
+			self.performUpdate {
+				self.waitView.isHidden = true
+				
+				// Delete all overlays of Map view
+				for overlay in self.mapView.overlays {
+					self.mapView.remove(overlay)
+				}
+				
+				// Delete all annotations of Map view
+				for annotation in self.mapView.annotations {
+					self.mapView.removeAnnotation(annotation)
+				}
+
+				self.showLocationOfTheSchedule(at: 0)
+				self.tableView.reloadData()
+			}
+		}
 	}
 }

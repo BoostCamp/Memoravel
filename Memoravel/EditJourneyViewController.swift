@@ -1,26 +1,26 @@
 //
-//  CreateJourneyViewController.swift
+//  EditJourneyViewController.swift
 //  Memoravel
 //
-//  Created by JUNYEONG.YOO on 2/7/17.
+//  Created by JUNYEONG.YOO on 2/20/17.
 //  Copyright © 2017 Boostcamp. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-protocol CreateJourneyViewControllerDelegate {
-	func finishCreatingNewJourney()
+protocol EditJourneyViewControllerDelegate {
+	
+	func finishEditingNewJourney()
 }
 
-class CreateJourneyViewController: UIViewController {
+class EditJourneyViewController: UIViewController {
 	
-	// Data controller handling Journeys
-	let journeyController = JourneyController.sharedInstance()
+	var journey: Journey!
+	var schedules: [Schedule]!
+	var delegate: EditJourneyViewControllerDelegate?
 	
-	var delegate: CreateJourneyViewControllerDelegate?
-	
-	var schedules = [Schedule]()
+	// Properties for Table view
 	var activeButton: UIButton?
 	
 	var currentLocationButton: UIButton?
@@ -35,14 +35,23 @@ class CreateJourneyViewController: UIViewController {
 	// Check whether the cell is about to delete
 	var isEditingCell: Bool = false
 
-	@IBOutlet weak var journeyTitleTextField: UITextField!
+	@IBOutlet weak var titleTextField: UITextField!
 	@IBOutlet weak var tableView: UITableView!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		journeyTitleTextField.delegate = self
-		navigationItem.rightBarButtonItem?.isEnabled = false
-    }
+		
+		// Settings for Table view
+		self.tableView.delegate = self
+		self.tableView.dataSource = self
+		
+		// Settings for Text field
+		self.titleTextField.delegate = self
+		self.titleTextField.text = self.journey.title
+		
+		// Assign schedules array
+		self.schedules = self.journey.schedules
+	}
 	
 	// Search location from default map
 	@IBAction func searchLocation(_ sender: UIButton) {
@@ -50,6 +59,9 @@ class CreateJourneyViewController: UIViewController {
 		
 		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "MapViewController") as? MapViewController {
 			self.activeButton = sender
+			
+			print("Button \" \(self.activeButton?.title(for: .normal)!)\" is clicked!")
+			
 			controller.delegate = self
 			
 			let navController = UINavigationController(rootViewController: controller)
@@ -69,12 +81,17 @@ class CreateJourneyViewController: UIViewController {
 			controller.senderTag = sender.tag
 			self.activeButton = sender
 			
+			print("Button \" \(self.activeButton?.title(for: .normal)!)\" is clicked!")
+			
 			switch sender.tag {
 			// If the user clicks start date button
 			case 1:
 				let contentView = sender.superview
-				if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+				if let scheduleCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: scheduleCell)!
+					
+					print("Row of this button: #\(indexPath.row)")
+					print("Previous end date: \(JourneyDate.formatted(date: self.schedules[indexPath.row - 1].endDate))")
 					
 					// If this schedule has a previous schedule
 					if indexPath.row > 0 {
@@ -85,12 +102,14 @@ class CreateJourneyViewController: UIViewController {
 			case 2:
 				// If the user clicks end date button
 				let contentView = sender.superview
-				if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+				if let scheduleCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: scheduleCell)!
+					
+					print("Row of this button: #\(indexPath.row)")
 					
 					if indexPath.row == self.schedules.count {
 						controller.startDate = self.selectedStartDate
-					
+						
 					} else {
 						controller.startDate = self.schedules[indexPath.row].startDate
 					}
@@ -108,27 +127,29 @@ class CreateJourneyViewController: UIViewController {
 			self.present(navController, animated: true, completion: nil)
 		}
 	}
-
+	
 	// MARK: - Complete creation of Journey data or cancel it
 	
 	@IBAction func doneCreation(_ sender: Any) {
 		if let location = self.selectedLocation, let startDate = self.selectedStartDate, let endDate = self.selectedEndDate {
+			// Append new schedule to the schedules array
 			let emptyAssets = [Date : [TravelAsset]]()
 			self.schedules.append(Schedule(location: location, startDate: startDate, endDate: endDate, assets: emptyAssets))
 		}
 		
 		if self.schedules.count > 0, let delegate = self.delegate {
-			// If there's a schedule
 			let journeyStartDate: Date = (self.schedules.first?.startDate)!
 			let journeyEndDate: Date = (self.schedules.last?.endDate)!
-			
-			var journeyTitle: String = self.journeyTitleTextField.text ?? ""
+
+			var journeyTitle: String = self.titleTextField.text ?? ""
 			if journeyTitle == "" { journeyTitle = "No Title" }
 			
-			let newJourney = Journey(title: journeyTitle, startDate: journeyStartDate, endDate: journeyEndDate, schedules: self.schedules)
-			journeyController.addJourney(newJourney)
+			self.journey.title = journeyTitle
+			self.journey.startDate = journeyStartDate
+			self.journey.endDate = journeyEndDate
+			self.journey.schedules = self.schedules
 			
-			delegate.finishCreatingNewJourney()
+			delegate.finishEditingNewJourney()
 			self.dismiss(animated: true, completion: nil)
 		}
 	}
@@ -136,19 +157,18 @@ class CreateJourneyViewController: UIViewController {
 	@IBAction func cancelCreating(_ sender: Any) {
 		self.dismiss(animated: true, completion: nil)
 	}
-	
 }
 
 // MARK: - Implement methods of UITableViewDataSource and UITableViewDelegate
 
-extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSource {
+extension EditJourneyViewController: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.schedules.count + 2
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let scheduleCell = tableView.dequeueReusableCell(withIdentifier: "ScheduleCell", for: indexPath) as! CreateScheduleCell
+		let scheduleCell = tableView.dequeueReusableCell(withIdentifier: "ScheduleCell", for: indexPath) as! EditScheduleCell
 		
 		// Cell for "add new schedule"
 		if indexPath.row == self.schedules.count + 1 {
@@ -156,7 +176,7 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 			scheduleCell.initialView.isHidden = false
 			self.addScheduleButton = scheduleCell.addButton
 			self.addScheduleButton?.isEnabled = (self.selectedEndDate != nil)
-		
+			
 			return scheduleCell
 		}
 		
@@ -182,8 +202,8 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 			
 			self.currentStartDateButton?.isEnabled = (self.selectedLocation != nil)
 			self.currentEndDateButton?.isEnabled = (self.selectedStartDate != nil)
-
-		
+			
+			
 		// Edited rows before
 		} else if indexPath.row < self.schedules.count {
 			let location: String = JourneyAddress.parseBriefAddress(self.schedules[indexPath.row].location)
@@ -245,8 +265,8 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 
 // MARK: - Implement method of UITextFieldDelegate
 
-extension CreateJourneyViewController: UITextFieldDelegate {
-
+extension EditJourneyViewController: UITextFieldDelegate {
+	
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		textField.resignFirstResponder()
 		return true
@@ -255,18 +275,18 @@ extension CreateJourneyViewController: UITextFieldDelegate {
 
 // MARK: - Implement method of MapViewControllerDelegate
 
-extension CreateJourneyViewController: MapViewControllerDelegate {
+extension EditJourneyViewController: MapViewControllerDelegate {
 	
 	func didSelectedLocation(_ placemark: MKPlacemark) {
 		let contentView = self.activeButton?.superview
-		if let currentCell = contentView?.superview as? CreateScheduleCell {
+		if let currentCell = contentView?.superview as? EditScheduleCell {
 			if let startDate = currentCell.startDateButton.title(for: .normal), let endDate = currentCell.endDateButton.title(for: .normal), (startDate != "Choose a Start Date" && endDate != "Choose an End Date") {
 				
 				// If the user wants to change the location, update schedules array
 				let indexPath = self.tableView.indexPath(for: currentCell)!
 				self.schedules[indexPath.row].location = placemark
 				print("Location has been changed!")
-			
+				
 			} else {
 				self.selectedLocation = placemark
 			}
@@ -278,7 +298,7 @@ extension CreateJourneyViewController: MapViewControllerDelegate {
 
 // MARK: - Implement method of CalendarViewControllerDelegate
 
-extension CreateJourneyViewController: CalendarViewControllerDelegate {
+extension EditJourneyViewController: CalendarViewControllerDelegate {
 	
 	func completeToSelectingDate(date: Date) {
 		if let tag = self.activeButton?.tag {
@@ -286,18 +306,22 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 			case 1:
 				// Start Date button
 				let contentView = self.activeButton?.superview
-				if let currentCell = contentView?.superview as? CreateScheduleCell {
+				if let currentCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: currentCell)!
 					
 					// If the user wants to change the start date, update schedules array
 					if indexPath.row < self.schedules.count {
 						self.schedules[indexPath.row].startDate = date
+						
 						print("Start Date has been changed!")
+						
+						// Initialize asset dict because start date has been changed
+						initializeAssetsDict(of: indexPath.row)
 						
 						// Synchronize date
 						self.synchronizeDates(from: self.activeButton!)
 						
-					// Start date of the new schedule
+						// Start date of the new schedule
 					} else {
 						self.selectedStartDate = date
 						self.currentEndDateButton?.isEnabled = true
@@ -307,18 +331,22 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 			case 2:
 				// End Date button
 				let contentView = self.activeButton?.superview
-				if let currentCell = contentView?.superview as? CreateScheduleCell {
+				if let currentCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: currentCell)!
 					
 					// If the user wants to change the end date, update schedules array
 					if indexPath.row < self.schedules.count {
 						self.schedules[indexPath.row].endDate = date
+						
 						print("End Date has been changed!")
+						
+						// Initialize asset dict because end date has been changed
+						initializeAssetsDict(of: indexPath.row)
 						
 						// Synchronize date
 						self.synchronizeDates(from: self.activeButton!)
-					
-					// End date of the new schedule
+						
+						// End date of the new schedule
 					} else {
 						self.selectedEndDate = date
 						self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -337,7 +365,7 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 	// Synchronize dates if the end date is not after the start date
 	func synchronizeDates(from sender: UIButton) {
 		let contentView = sender.superview
-		if let scheduleCell = contentView?.superview as? CreateScheduleCell {
+		if let scheduleCell = contentView?.superview as? EditScheduleCell {
 			var indexPath: IndexPath = self.tableView.indexPath(for: scheduleCell)!
 			var currentRow: Int = indexPath.row
 			
@@ -348,6 +376,9 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 				if startDate > endDate {
 					endDate = startDate
 					self.schedules[currentRow].endDate = endDate
+					
+					// Initialize asset dict because end date has been changed
+					initializeAssetsDict(of: currentRow)
 				}
 				
 				currentRow += 1
@@ -356,6 +387,9 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 					
 					if endDate > startDate {
 						self.schedules[currentRow].startDate = endDate
+						
+						// Initialize asset dict because end date has been changed
+						initializeAssetsDict(of: currentRow)
 					}
 				}
 			}
@@ -374,11 +408,19 @@ extension CreateJourneyViewController: CalendarViewControllerDelegate {
 			self.tableView.reloadData()
 		}
 	}
+	
+	// Initialize Asset Dictionary of the schedule when the user changes start date or end date
+	func initializeAssetsDict(of index: Int) {
+		if self.schedules[index].assetsDict.count != 0 {
+			let newAssetDict = [Date : [TravelAsset]]()
+			self.schedules[index].assetsDict = newAssetDict
+		}
+	}
 }
 
 // MARK: - Create a method to add a new Schedule instance to the array
 
-extension CreateJourneyViewController {
+extension EditJourneyViewController {
 	
 	func appendNewMainSchedule() {
 		if let location = self.selectedLocation, let startDate = self.selectedStartDate, let endDate = self.selectedEndDate {
@@ -395,7 +437,7 @@ extension CreateJourneyViewController {
 			if !((navigationItem.rightBarButtonItem?.isEnabled)!) { navigationItem.rightBarButtonItem?.isEnabled = true }
 			
 			self.tableView.reloadData()
-		
+			
 		} else {
 			print("USER TRIES TO ADD NEW CELL, BUT ALL THE INFORMATION WAS NOT FILLED :-[")
 		}

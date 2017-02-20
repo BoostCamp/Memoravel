@@ -35,6 +35,8 @@
 		CCB2C1F31E4AE8850060FFB6 /* JourneyColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */; };
 		CCB2C1F51E4AF9900060FFB6 /* CreateScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB2C1F41E4AF9900060FFB6 /* CreateScheduleCell.swift */; };
 		CCD348D31E512BD3004BC8F0 /* AssetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */; };
+		CCD65CEC1E5A6B0800D5F1C3 /* EditJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */; };
+		CCD65CEE1E5A802F00D5F1C3 /* EditScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */; };
 		CCDB21E51E4C9A8400D73647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCDB21E31E4C9A8400D73647 /* Main.storyboard */; };
 		DB244AF3DBEA28BF634C0EDC /* Pods_Memoravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */; };
 /* End PBXBuildFile section */
@@ -71,6 +73,8 @@
 		CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyColor.swift; sourceTree = "<group>"; };
 		CCB2C1F41E4AF9900060FFB6 /* CreateScheduleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateScheduleCell.swift; sourceTree = "<group>"; };
 		CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCollectionViewCell.swift; sourceTree = "<group>"; };
+		CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditJourneyViewController.swift; sourceTree = "<group>"; };
+		CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditScheduleCell.swift; sourceTree = "<group>"; };
 		CCDB21E41E4C9A8400D73647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Memoravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3222DCCB7AC987A6CE1A0CE /* Pods-Memoravel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.release.xcconfig"; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
 				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
 				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
+				CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 				CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */,
 				CC4706351E5160E4005B4277 /* AssetHeaderCollectionReusableView.swift */,
 				CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */,
+				CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -334,9 +340,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */,
+				CCD65CEC1E5A6B0800D5F1C3 /* EditJourneyViewController.swift in Sources */,
 				CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */,
 				CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */,
 				CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */,
+				CCD65CEE1E5A802F00D5F1C3 /* EditScheduleCell.swift in Sources */,
 				CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */,
 				CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */,
 				CCB265E91E4BEA7D00C35E7B /* LocationSearchTable.swift in Sources */,
