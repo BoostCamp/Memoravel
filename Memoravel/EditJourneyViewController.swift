@@ -80,18 +80,13 @@ class EditJourneyViewController: UIViewController {
 			controller.delegate = self
 			controller.senderTag = sender.tag
 			self.activeButton = sender
-			
-			print("Button \" \(self.activeButton?.title(for: .normal)!)\" is clicked!")
-			
+
 			switch sender.tag {
 			// If the user clicks start date button
 			case 1:
 				let contentView = sender.superview
 				if let scheduleCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: scheduleCell)!
-					
-					print("Row of this button: #\(indexPath.row)")
-					print("Previous end date: \(JourneyDate.formatted(date: self.schedules[indexPath.row - 1].endDate))")
 					
 					// If this schedule has a previous schedule
 					if indexPath.row > 0 {
@@ -104,9 +99,7 @@ class EditJourneyViewController: UIViewController {
 				let contentView = sender.superview
 				if let scheduleCell = contentView?.superview as? EditScheduleCell {
 					let indexPath = self.tableView.indexPath(for: scheduleCell)!
-					
-					print("Row of this button: #\(indexPath.row)")
-					
+
 					if indexPath.row == self.schedules.count {
 						controller.startDate = self.selectedStartDate
 						
@@ -236,12 +229,13 @@ extension EditJourneyViewController: UITableViewDelegate, UITableViewDataSource 
 	}
 	
 	func confirmDelete(indexPath: IndexPath) {
-		let alertController = UIAlertController(title: "Delete schedule", message: "Are you sure you want to delete this schedule?", preferredStyle: .actionSheet)
+		let alertController = UIAlertController(title: "Delete Schedule", message: "Are you sure you want to delete this schedule?", preferredStyle: .actionSheet)
 		
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
 			self.schedules.remove(at: indexPath.row)
+			self.tableView.beginUpdates()
 			self.tableView.deleteRows(at: [indexPath], with: .automatic)
-			self.tableView.reloadData()
+			self.tableView.endUpdates()
 		}
 		
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

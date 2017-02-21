@@ -25,24 +25,20 @@ class MasterViewController: UIViewController {
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
 		
-		// Settings for rightBarButton
-		let addButton = UIButton(type: .custom)
-		addButton.setImage(#imageLiteral(resourceName: "add_white"), for: .normal)
-		addButton.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
-		addButton.addTarget(self, action: #selector(createJourney), for: .touchUpInside)
-		addButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)
-		let addBarButton = UIBarButtonItem(customView: addButton)
-		navigationItem.rightBarButtonItem = addBarButton
-		
 		self.journeyController = JourneyController.sharedInstance()
 		if journeyController.count > 0 {
 			self.initialView.isHidden = true
 		}
 	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.tableView.reloadData()
+	}
 
 	// MARK: - Action method when user wants to make a new journey
 	
-	func createJourney() {
+	@IBAction func createJourney(_ sender: Any) {
 		if let nextController = self.storyboard?.instantiateViewController(withIdentifier: "CreateJourneyViewController") as? CreateJourneyViewController {
 			nextController.delegate = self
 			
@@ -73,7 +69,7 @@ extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 			let titleTextAttributes = NSAttributedString(string: journey.title, attributes: [
 				NSStrokeColorAttributeName : UIColor.black,
 				NSForegroundColorAttributeName : UIColor.journeyLightColor,
-				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Bold", size: 23)!,
+				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Bold", size: 40)!,
 				NSStrokeWidthAttributeName : -3.0
 			])
 			
@@ -82,7 +78,7 @@ extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 			let dateTextAttributes = NSAttributedString(string: dates, attributes: [
 				NSStrokeColorAttributeName : UIColor.black,
 				NSForegroundColorAttributeName : UIColor.journeyLightColor,
-				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Regular", size: 15)!,
+				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Regular", size: 25)!,
 				NSStrokeWidthAttributeName : -3.0
 			])
 			
@@ -93,6 +89,33 @@ extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 		}
 		
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+		if editingStyle == .delete {
+			print("cell #\(indexPath.row) is about to delete!")
+			confirmDelete(indexPath: indexPath)
+		}
+	}
+	
+	func confirmDelete(indexPath: IndexPath) {
+		let alertController = UIAlertController(title: "Delete Journey", message: "Are you sure you want to delete this journey?", preferredStyle: .actionSheet)
+		
+		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
+			self.journeyController.removeJourney(at: indexPath.row)
+			self.tableView.beginUpdates()
+			self.tableView.deleteRows(at: [indexPath], with: .fade)
+			self.tableView.endUpdates()
+		}
+		
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+			self.tableView.setEditing(false, animated: true)
+		}
+		
+		alertController.addAction(deleteAction)
+		alertController.addAction(cancelAction)
+		
+		self.present(alertController, animated: true, completion: nil)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -131,10 +154,6 @@ extension MasterViewController {
 	
 	func subscribeToSetAsThumbnail() {
 		NotificationCenter.default.addObserver(self, selector: #selector(didSelectAsThumbnail), name: .beAboutToThumbnail, object: nil)
-	}
-	
-	func unsubscribeToSetAsThumbnail() {
-		NotificationCenter.default.removeObserver(self, name: .beAboutToThumbnail, object: nil)
 	}
 	
 	func didSelectAsThumbnail(_ notification: Notification) {

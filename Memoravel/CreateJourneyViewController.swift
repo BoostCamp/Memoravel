@@ -136,7 +136,7 @@ class CreateJourneyViewController: UIViewController {
 			var journeyTitle: String = self.journeyTitleTextField.text ?? ""
 			if journeyTitle == "" { journeyTitle = "No Title" }
 			
-			let newJourney = Journey(title: journeyTitle, startDate: journeyStartDate, endDate: journeyEndDate, schedules: self.schedules)
+			let newJourney = Journey(title: journeyTitle, startDate: journeyStartDate, endDate: journeyEndDate, schedules: self.schedules, thumbnailImage: #imageLiteral(resourceName: "mastercell_image"))
 			journeyController.addJourney(newJourney)
 			
 			delegate.finishCreatingNewJourney()
@@ -231,8 +231,9 @@ extension CreateJourneyViewController: UITableViewDelegate, UITableViewDataSourc
 		
 		let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { (action) in
 			self.schedules.remove(at: indexPath.row)
-			self.tableView.deleteRows(at: [indexPath], with: .automatic)
-			self.tableView.reloadData()
+			self.tableView.beginUpdates()
+			self.tableView.deleteRows(at: [indexPath], with: .fade)
+			self.tableView.endUpdates()
 		}
 		
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in

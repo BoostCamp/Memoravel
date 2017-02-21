@@ -19,3 +19,20 @@ extension Date {
 		return Date(timeInterval: 0, since: date)
 	}
 }
+
+// Change date and time
+extension Date {
+	
+	struct Calendar {
+		
+		static let utc: NSCalendar  = {
+			var calendar = NSCalendar.current
+			calendar.timeZone = TimeZone(abbreviation: "UTC")!
+			return calendar as NSCalendar
+		}()
+	}
+	
+	var startOfDayAtUTC: Date {
+		return Calendar.utc.startOfDay(for: self)
+	}
+}

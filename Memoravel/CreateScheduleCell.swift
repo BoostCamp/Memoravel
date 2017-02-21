@@ -32,6 +32,9 @@ class CreateScheduleCell: UITableViewCell {
 		backgroundCardView.layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
 		backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 0)
 		backgroundCardView.layer.shadowOpacity = 0.8
+		
+		// Setting for add button
+		self.addButton.setImage(#imageLiteral(resourceName: "add_light"), for: .highlighted)
     }
 	
 	@IBAction func addNewSchedule(_ sender: Any) {

@@ -19,6 +19,7 @@ class MapViewController: UIViewController {
 
 	let locationManager = CLLocationManager()
 	var resultSearchController: UISearchController!
+	var searchBar: UISearchBar!
 	var selectedPin: MKPlacemark?
 	var delegate: MapViewControllerDelegate?
 	var cancelButton: UIButton!
@@ -46,25 +47,27 @@ class MapViewController: UIViewController {
 		resultSearchController.delegate = self
 		resultSearchController.searchResultsUpdater = locationSearchTable
 		
-		// Settings for search bar
-		let searchBar = resultSearchController!.searchBar
+		// Settings for navigation bar
+		self.navigationController?.automaticallyAdjustsScrollViewInsets = false
+		self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+		self.automaticallyAdjustsScrollViewInsets = false
 		
-		self.searchBarContainer.addSubview(searchBar)
-		searchBar.sizeToFit()
-		searchBar.placeholder = "Search for a place or address"
-		searchBar.returnKeyType = .search
-		searchBar.barTintColor = UIColor.journeyMainColor
-		searchBar.tintColor = UIColor.journeyLightColor
+		// Settings for search bar
+		self.searchBar = resultSearchController!.searchBar
+		
+		self.searchBarContainer.addSubview(self.searchBar)
+		self.searchBar.sizeToFit()
+		self.searchBar.placeholder = "Search for a place or address"
+		self.searchBar.returnKeyType = .search
+		self.searchBar.barTintColor = UIColor.journeyMainColor
+		self.searchBar.tintColor = UIColor.journeyLightColor
+		self.searchBar.isTranslucent = false
 		
 		resultSearchController.hidesNavigationBarDuringPresentation = false
 		resultSearchController.dimsBackgroundDuringPresentation = true
 		definesPresentationContext = true
 		locationSearchTable.mapView = searchMapView
 		locationSearchTable.delegate = self
-		
-		self.navigationController?.automaticallyAdjustsScrollViewInsets = false
-		self.navigationController?.extendedLayoutIncludesOpaqueBars = true
-		self.automaticallyAdjustsScrollViewInsets = false
 		
 		// FIXME: Do not follow user location
 		searchMapView.userTrackingMode = .none
@@ -124,6 +127,9 @@ extension MapViewController: LocationSearchTableDelegate {
 		let span = MKCoordinateSpanMake(0.05, 0.05)
 		let region = MKCoordinateRegionMake(placemark.coordinate, span)
 		searchMapView.setRegion(region, animated: true)
+		
+		// Inactive current search controller
+		self.resultSearchController.isActive = false
 	}
 }
 

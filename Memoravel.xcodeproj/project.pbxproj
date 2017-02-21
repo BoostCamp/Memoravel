@@ -37,7 +37,6 @@
 		CCD348D31E512BD3004BC8F0 /* AssetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */; };
 		CCD65CEC1E5A6B0800D5F1C3 /* EditJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */; };
 		CCD65CEE1E5A802F00D5F1C3 /* EditScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */; };
-		CCD65CF01E5AD65E00D5F1C3 /* LocationSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCD65CEF1E5AD65E00D5F1C3 /* LocationSearchController.swift */; };
 		CCDB21E51E4C9A8400D73647 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCDB21E31E4C9A8400D73647 /* Main.storyboard */; };
 		DB244AF3DBEA28BF634C0EDC /* Pods_Memoravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */; };
 /* End PBXBuildFile section */
@@ -76,7 +75,6 @@
 		CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetCollectionViewCell.swift; sourceTree = "<group>"; };
 		CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditJourneyViewController.swift; sourceTree = "<group>"; };
 		CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditScheduleCell.swift; sourceTree = "<group>"; };
-		CCD65CEF1E5AD65E00D5F1C3 /* LocationSearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationSearchController.swift; sourceTree = "<group>"; };
 		CCDB21E41E4C9A8400D73647 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8FBE071F2E8CB9DEB7E806E /* Pods_Memoravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Memoravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3222DCCB7AC987A6CE1A0CE /* Pods-Memoravel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.release.xcconfig"; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
 				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
 				CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */,
-				CCD65CEF1E5AD65E00D5F1C3 /* LocationSearchController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -362,7 +359,6 @@
 				CC312FBB1E583A020099A6BC /* PlayImageCollectionViewCell.swift in Sources */,
 				CCB2C1EE1E4AE0490060FFB6 /* JourneyController.swift in Sources */,
 				CC33566E1E5071B500C58493 /* SchedulesTableViewCell.swift in Sources */,
-				CCD65CF01E5AD65E00D5F1C3 /* LocationSearchController.swift in Sources */,
 				CCB2C1C21E4A0A920060FFB6 /* AppDelegate.swift in Sources */,
 				CC33566C1E4F48ED00C58493 /* CalendarCollectionViewCell.swift in Sources */,
 				CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */,

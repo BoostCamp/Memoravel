@@ -10,9 +10,6 @@ import UIKit
 import FSCalendar
 import Photos
 
-// TODO: Create navigation controller to navigate from start date view to end date view sequentially
-// TODO: Show dialogue when user choose wrong date
-
 protocol CalendarViewControllerDelegate {
 	func completeToSelectingDate(date: Date)
 }
@@ -20,7 +17,7 @@ protocol CalendarViewControllerDelegate {
 class CalendarViewController: UIViewController {
 	
 	var delegate: CalendarViewControllerDelegate?
-	var selectedDate: Date?
+	var selectedDate: Date!
 	var senderTag: Int?
 	var startDate: Date?
 	
@@ -28,20 +25,24 @@ class CalendarViewController: UIViewController {
 	
 	@IBOutlet weak var calendar: FSCalendar!
 	@IBOutlet weak var collectionView: UICollectionView!
-
+	@IBOutlet weak var informationLabel: UILabel!
+	
+	@IBOutlet weak var addView: UIView!
+	@IBOutlet weak var addButton: UIButton!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-//		self.calendar.select(self.selectedDate, scrollToDate: true)
 		
 		// Settings for Navigation title
 		if let tag = senderTag {
 			switch tag {
 			case 1:
 				navigationItem.title = "Select a Start Date"
+				self.informationLabel.text = "Choose the first image of the schedule"
 				
 			case 2:
 				navigationItem.title = "Select an End Date"
+				self.informationLabel.text = "Choose the last image of the schedule"
 				
 			default:
 				return
@@ -54,11 +55,15 @@ class CalendarViewController: UIViewController {
 		
 		collectionView.delegate = self
 		collectionView.dataSource = self
+		
+		// Settings for Add view
+		self.addView.isHidden = true
+		self.addButton.setImage(#imageLiteral(resourceName: "check_light"), for: .highlighted)
     }
 	
-	@IBAction func comfirmDate(_ sender: Any) {
-		if let delegate = self.delegate, let date = self.selectedDate {
-			delegate.completeToSelectingDate(date: date)
+	@IBAction func doneChoosing(_ sender: Any) {
+		if let delegate = self.delegate {
+			delegate.completeToSelectingDate(date: self.selectedDate)
 			self.dismiss(animated: true, completion: nil)
 		}
 	}
@@ -73,17 +78,26 @@ class CalendarViewController: UIViewController {
 extension CalendarViewController: FSCalendarDataSource, FSCalendarDelegate {
 	
 	func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-		selectedDate = date
-		let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: date)
+		self.selectedDate = date
+		let nextDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+
+		print(JourneyDate.localTime(date: date))
+		print(JourneyDate.localTime(date: nextDate))
 		
 		// Get image assets taken at selected date
 		let fetchOptions = PHFetchOptions()
-		fetchOptions.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", date as NSDate, (nextDate ?? date) as NSDate)
-		selectedPhotos = PHAsset.fetchAssets(with: fetchOptions)
+		fetchOptions.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", self.selectedDate as NSDate, nextDate as NSDate)
+		fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: true)]
+		self.selectedPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
+
 		self.collectionView.reloadData()
 		
-		// TODO: What does this code mean?
-//		self.collectionView.collectionViewLayout.invalidateLayout()
+		if (self.selectedPhotos?.count)! == 0 {
+			self.addView.isHidden = false
+		
+		} else {
+			self.addView.isHidden = true
+		}
 	}
 	
 	func minimumDate(for calendar: FSCalendar) -> Date {
@@ -119,5 +133,18 @@ extension CalendarViewController: UICollectionViewDelegate, UICollectionViewData
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.selectedPhotos?.count ?? 0
+	}
+	
+	// If the user clicks image cell, find out the creation date of the asset and send it
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let asset = (self.selectedPhotos?[indexPath.row])!
+		let date: Date = asset.creationDate!
+		
+		print("selected date from asset: \(date)")
+		
+		if let delegate = self.delegate {
+			delegate.completeToSelectingDate(date: date)
+			self.dismiss(animated: true, completion: nil)
+		}
 	}
 }

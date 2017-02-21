@@ -10,22 +10,23 @@ import UIKit
 import Photos
 import MapKit
 
-//protocol DetailViewControllerDelegate {
-//	func didSetAsThumbnailImage(image: UIImage?)
-//}
-
 class DetailViewController: UIViewController {
 	
 	var travelAsset: TravelAsset!
-//	var delegate: DetailViewControllerDelegate?
 	
 	@IBOutlet weak var backgroundCardView: UIView!
 	@IBOutlet weak var assetImageView: UIImageView!
+	@IBOutlet weak var thumbnailButton: UIButton!
+	@IBOutlet weak var shareButton: UIButton!
 	@IBOutlet weak var likeButton: UIButton!
 	@IBOutlet weak var locationLabel: UILabel!
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var buttonBackgroundView: UIView!
 	@IBOutlet weak var commentTextField: UITextField!
+	
+	// IBOutlets for Information view
+	@IBOutlet weak var informationView: UIView!
+	@IBOutlet weak var informationLabel: UILabel!
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,11 @@ class DetailViewController: UIViewController {
 		// Show location information in UILabel
 		locationLabel.numberOfLines = 0
 		locationLabel.sizeToFit()
+		
+		// Settings for navigation bar
+		self.navigationController?.automaticallyAdjustsScrollViewInsets = false
+		self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+		self.automaticallyAdjustsScrollViewInsets = false
 		
 		if let location = travelAsset.asset.location {
 			CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
@@ -79,11 +85,13 @@ class DetailViewController: UIViewController {
 		buttonBackgroundView.layer.shadowOffset = CGSize(width: 0, height: 0)
 		buttonBackgroundView.layer.shadowOpacity = 0.8
 		
-		// Set like button status
+		// Settings for buttons
 		if self.travelAsset.isLike { likeButton.setImage(#imageLiteral(resourceName: "like"), for: .normal) }
+		self.thumbnailButton.setImage(#imageLiteral(resourceName: "pin_light"), for: .highlighted)
+		self.shareButton.setImage(#imageLiteral(resourceName: "share"), for: .highlighted)
 		
 		// Set comment text field
-		if let comment = self.travelAsset.comment { commentTextField.text = comment }
+		self.commentTextField.text = self.travelAsset.comment
 		
 		// Set delegate of text field
 		self.commentTextField.delegate = self
@@ -106,6 +114,8 @@ class DetailViewController: UIViewController {
 	@IBAction func setAsThumbnail(_ sender: Any) {
 		print("setAsThumbnail BUTTON WAS CLICKED")
 		NotificationCenter.default.post(name: .beAboutToThumbnail, object: self.assetImageView.image)
+		
+		self.showInformationView()
 	}
 	
 	@IBAction func shareImage(_ sender: Any) {
@@ -127,7 +137,7 @@ class DetailViewController: UIViewController {
 	}
 
 	@IBAction func saveTravelAsset(_ sender: Any) {
-		self.travelAsset.comment = commentTextField.text
+		self.travelAsset.comment = commentTextField.text!
 		_ = self.navigationController?.popViewController(animated: true)
 	}
 }
@@ -182,3 +192,34 @@ extension Notification.Name {
 	
 	static let beAboutToThumbnail = Notification.Name("be_about_to_thumbnail")
 }
+
+// MARK: - Toggle of Information View
+
+extension DetailViewController {
+	
+	func showInformationView() {
+		UIView.animate(withDuration: 0.7, animations: {
+			self.informationView.frame.size.height = 37.0
+		}) { (didAppearView) in
+			if didAppearView {
+				UIView.animate(withDuration: 0.3, animations: { 
+					self.informationLabel.frame.size.height = 21.0
+				}, completion: { (didAppearLabel) in
+					if didAppearLabel {
+						sleep(1)
+						UIView.animate(withDuration: 0.3, animations: { 
+							self.informationLabel.frame.size.height = 0.0
+						}, completion: { (didDisappearLabel) in
+							if didDisappearLabel {
+								UIView.animate(withDuration: 0.7, animations: { 
+									self.informationView.frame.size.height = 0.0
+								})
+							}
+						})
+					}
+				})
+			}
+		}
+	}
+}
+

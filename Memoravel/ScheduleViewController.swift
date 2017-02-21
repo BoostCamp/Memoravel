@@ -156,9 +156,6 @@ extension ScheduleViewController {
 	
 	func saveAssetsToMainSchedule() {
 		
-		// Check whether this method is called twice
-//		if self.journey.isFetchedAsset { return }
-		
 		let fetchOption = PHFetchOptions()
 		self.activityView.startAnimating()
 		
@@ -175,16 +172,24 @@ extension ScheduleViewController {
 			var assetDict = [Date : [TravelAsset]]()
 			var assets = [TravelAsset]()
 			
-			while date <= endDate {
+			while date < endDate {
 				// TODO: DELETE THIS TEST CODE
 				print("Get images taken on \(date)")
+
+				let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: date)!
 				
-				let nextDate: Date = Calendar.current.date(byAdding: .day, value: 1, to: date)!
-				fetchOption.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", date as NSDate, nextDate as NSDate)
-				let fetchResult: PHFetchResult<PHAsset> = PHAsset.fetchAssets(with: fetchOption)
+				if nextDate >= endDate {
+					fetchOption.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate <= %@", date as NSDate, endDate as NSDate)
+					
+				} else {
+					fetchOption.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", date as NSDate, nextDate as NSDate)
+				}
+				
+				fetchOption.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: true)]
+				let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOption)
 				
 				for index in 0..<fetchResult.count {
-					assets.append(TravelAsset(asset: fetchResult[index], isLike: false, comment: nil))
+					assets.append(TravelAsset(asset: fetchResult[index], isLike: false, comment: ""))
 				}
 				
 				assetDict[date] = assets
@@ -201,7 +206,6 @@ extension ScheduleViewController {
 		}
 		
 		self.activityView.stopAnimating()
-//		self.journey.isFetchedAsset = true
 	}
 	
 	func performUpdate(_ updates: @escaping() -> Void) {
