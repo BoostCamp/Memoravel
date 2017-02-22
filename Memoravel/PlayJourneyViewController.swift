@@ -23,6 +23,7 @@ class PlayJourneyViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var collectionView: UICollectionView!
+	@IBOutlet weak var informationView: UIView!
 	
 	// Properties for animating images
 	var progress: CGFloat = 0.0
@@ -34,6 +35,9 @@ class PlayJourneyViewController: UIViewController {
 	var polyline: MKGeodesicPolyline?
 	var annotations: [MKPointAnnotation]?
 	
+	// Properties for tool bar
+	@IBOutlet weak var bottomButton: UIButton!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -43,15 +47,16 @@ class PlayJourneyViewController: UIViewController {
 		
 		// Extract schedule assets from schedules array
 		self.appendScheduleAssets()
-//		self.animateLocationsOnMap(index: 0)
 		
 		// Set the delegate of the MKMap
 		self.mapView.delegate = self
+		
+		// Hide information view at first
+		self.informationView.isHidden = true
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		configAutoScrollTimer()
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
@@ -72,6 +77,45 @@ class PlayJourneyViewController: UIViewController {
 	@IBAction func closeModal(_ sender: Any) {
 		self.timer?.invalidate()
 		self.dismiss(animated: true, completion: nil)
+	}
+	
+	@IBAction func buttonAction(_ sender: UIButton) {
+		// Settings when the button is waiting for user action to record
+		if sender.title(for: .normal) == "  Start Recording" {
+			sender.setTitle("  Stop Recording", for: .normal)
+			sender.setImage(#imageLiteral(resourceName: "warning"), for: .normal)
+			self.startRecording()
+		
+		// Settings when the botton is waiting for user to stop recording
+		} else if sender.title(for: .normal) == "  Stop Recording" {
+			sender.setTitle("  Start Recording", for: .normal)
+			sender.setImage(#imageLiteral(resourceName: "recording"), for: .normal)
+			self.stopRecording()
+		
+		// Settings for share button
+		} else if sender.title(for: .normal) == "  Share Recorded Video" {
+			self.shareVideo()
+		}
+	}
+	
+	func startRecording() {
+		print("startRecording")
+		configAutoScrollTimer()
+		self.informationView.isHidden = false
+	}
+	
+	func stopRecording() {
+		print("stopRecording")
+		deconfigAutoScrollTimer()
+		self.informationView.isHidden = true
+		
+		self.collectionView.contentOffset.x = 0.0
+		self.progress = 0.0
+		self.animateLocationsOnMap(index: 0)
+	}
+	
+	func shareVideo() {
+		// Add share actions
 	}
 }
 
@@ -97,25 +141,6 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 	}
 	
 	public func animateLocationsOnMap(index: Int) {
-//		let location: MKPlacemark = self.schedules[index].location
-//		
-//		let annotation = MKPointAnnotation()
-//		annotation.coordinate = location.coordinate
-//		annotation.title = location.name
-//		
-//		if let city = location.locality, let state = location.administrativeArea, let country = location.country {
-//			annotation.subtitle = "\(city) \(state), \(country)"
-//		}
-//		
-//		print("LOCATION: \(location.name!)")
-//		
-//		self.mapView.addAnnotation(annotation)
-//		self.mapView.selectAnnotation(annotation, animated: true)
-//		
-//		let span = MKCoordinateSpanMake(2.0, 2.0)
-//		let region = MKCoordinateRegionMake(location.coordinate, span)
-//		self.mapView.setRegion(region, animated: true)
-		
 		var coordinates: [CLLocationCoordinate2D] = self.journey.getCoordinatesOfJourney()
 		
 		if (self.mapView.annotations.count == 0) && (self.mapView.overlays.count == 0) {
@@ -191,10 +216,12 @@ extension PlayJourneyViewController: UICollectionViewDelegate, UICollectionViewD
 extension PlayJourneyViewController {
 	
 	func configAutoScrollTimer() {
+		print("configAutoScrollTimer")
 		self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(autoScrollView), userInfo: nil, repeats: true)
 	}
 	
 	func deconfigAutoScrollTimer() {
+		print("deconfigAutoScrollTimer")
 		self.timer?.invalidate()
 	}
 	
@@ -203,6 +230,7 @@ extension PlayJourneyViewController {
 	}
 	
 	func autoScrollView() {
+		print("autoScrollView")
 		let initialPoint = CGPoint(x: self.progress, y: 0.0)
 		
 		if __CGPointEqualToPoint(initialPoint, self.collectionView.contentOffset) {
@@ -227,6 +255,10 @@ extension PlayJourneyViewController {
 				deconfigAutoScrollTimer()
 				self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
 				self.animateLocationsOnMap(index: 0)
+				
+				self.informationView.isHidden = true
+				self.bottomButton.setTitle("  Share Recorded Video", for: .normal)
+				self.bottomButton.setImage(#imageLiteral(resourceName: "share_bold"), for: .normal)
 				return
 			}
 			

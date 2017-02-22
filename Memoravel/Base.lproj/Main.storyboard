@@ -1186,11 +1186,63 @@
                                     <constraint firstItem="zsW-Xg-QNS" firstAttribute="centerX" secondItem="nF4-er-cK8" secondAttribute="centerX" id="pAn-Q4-CIZ"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z4w-36-oS3">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now Recording" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFW-lG-2lF">
+                                        <rect key="frame" x="107" y="264.5" width="160.5" height="30"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="25"/>
+                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please wait a moment while recording in progress" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TpW-hU-h32">
+                                        <rect key="frame" x="41.5" y="297.5" width="292.5" height="17"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="14"/>
+                                        <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="TpW-hU-h32" firstAttribute="top" secondItem="PFW-lG-2lF" secondAttribute="bottom" constant="3" id="SuD-Xz-0rQ"/>
+                                    <constraint firstItem="PFW-lG-2lF" firstAttribute="centerY" secondItem="z4w-36-oS3" secondAttribute="centerY" id="brE-5g-NYs"/>
+                                    <constraint firstItem="PFW-lG-2lF" firstAttribute="centerX" secondItem="z4w-36-oS3" secondAttribute="centerX" id="btc-zP-FPX"/>
+                                    <constraint firstItem="TpW-hU-h32" firstAttribute="centerX" secondItem="z4w-36-oS3" secondAttribute="centerX" id="los-OM-Fvx"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IT-v9-yFV">
+                                <rect key="frame" x="-0.5" y="559" width="375" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jEm-h8-p46">
+                                        <rect key="frame" x="124" y="11" width="128" height="22"/>
+                                        <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
+                                        <state key="normal" title="  Start Recording" image="recording">
+                                            <color key="titleColor" red="0.2274509804" green="0.25490196079999999" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonAction:" destination="K8u-cn-LFW" eventType="touchUpInside" id="JVk-mH-ZWV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="jEm-h8-p46" firstAttribute="centerY" secondItem="3IT-v9-yFV" secondAttribute="centerY" id="3EZ-Qw-R8D"/>
+                                    <constraint firstItem="jEm-h8-p46" firstAttribute="centerX" secondItem="3IT-v9-yFV" secondAttribute="centerX" id="euO-Qu-8sm"/>
+                                    <constraint firstAttribute="height" constant="44" id="gRz-cp-gmf"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="nF4-er-cK8" firstAttribute="centerY" secondItem="8UG-uA-YTM" secondAttribute="centerY" id="3Jj-6K-7Xl"/>
                             <constraint firstItem="nF4-er-cK8" firstAttribute="centerX" secondItem="8UG-uA-YTM" secondAttribute="centerX" id="Fwf-gK-T2s"/>
+                            <constraint firstItem="3IT-v9-yFV" firstAttribute="width" secondItem="8UG-uA-YTM" secondAttribute="width" id="H0g-hg-PjL"/>
+                            <constraint firstItem="z4w-36-oS3" firstAttribute="top" secondItem="DL5-sL-6LJ" secondAttribute="bottom" id="L4c-su-c8S"/>
+                            <constraint firstItem="6Ca-x1-I6o" firstAttribute="top" secondItem="3IT-v9-yFV" secondAttribute="bottom" id="QC3-Xd-BJ8"/>
+                            <constraint firstItem="z4w-36-oS3" firstAttribute="leading" secondItem="8UG-uA-YTM" secondAttribute="leadingMargin" constant="-16" id="VUf-aj-RGh"/>
+                            <constraint firstItem="3IT-v9-yFV" firstAttribute="centerX" secondItem="8UG-uA-YTM" secondAttribute="centerX" id="aeT-TD-IHz"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="z4w-36-oS3" secondAttribute="trailing" constant="-16" id="hgt-ZZ-Xqx"/>
+                            <constraint firstItem="3IT-v9-yFV" firstAttribute="top" secondItem="z4w-36-oS3" secondAttribute="bottom" id="yyf-A9-zoX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Play Journey" id="ZaX-7o-xvx">
@@ -1201,7 +1253,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="bottomButton" destination="jEm-h8-p46" id="Thb-vZ-AXU"/>
                         <outlet property="collectionView" destination="zsW-Xg-QNS" id="Zui-Fa-TVP"/>
+                        <outlet property="informationView" destination="z4w-36-oS3" id="PmP-nq-KBB"/>
                         <outlet property="mapView" destination="j2r-xB-u3u" id="afn-81-bRX"/>
                     </connections>
                 </viewController>
@@ -1772,6 +1826,7 @@
         <image name="main_cell_image" width="341" height="341"/>
         <image name="pin" width="22" height="22"/>
         <image name="placeholder" width="42" height="42"/>
+        <image name="recording" width="22" height="22"/>
         <image name="select_check" width="42" height="42"/>
         <image name="share_bold" width="22" height="22"/>
         <image name="thumbnails" width="22" height="22"/>
