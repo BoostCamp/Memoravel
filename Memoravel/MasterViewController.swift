@@ -65,25 +65,10 @@ extension MasterViewController: UITableViewDelegate, UITableViewDataSource {
 		
 		if let masterCell = cell as? MasterTableViewCell {
 			let journey: Journey = journeyController.getJourney(at: indexPath.row)
-		
-			let titleTextAttributes = NSAttributedString(string: journey.title, attributes: [
-				NSStrokeColorAttributeName : UIColor.black,
-				NSForegroundColorAttributeName : UIColor.journeyLightColor,
-				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Bold", size: 40)!,
-				NSStrokeWidthAttributeName : -3.0
-			])
-			
 			let dates: String = JourneyDate.formatted(date: journey.startDate) + " - " + JourneyDate.formatted(date: journey.endDate)
 			
-			let dateTextAttributes = NSAttributedString(string: dates, attributes: [
-				NSStrokeColorAttributeName : UIColor.black,
-				NSForegroundColorAttributeName : UIColor.journeyLightColor,
-				NSFontAttributeName : UIFont(name: "AppleSDGothicNeo-Regular", size: 25)!,
-				NSStrokeWidthAttributeName : -3.0
-			])
-			
-			masterCell.journeyTitle.attributedText = titleTextAttributes
-			masterCell.journeyDate.attributedText = dateTextAttributes
+			masterCell.journeyTitle.text = journey.title
+			masterCell.journeyDate.text = dates
 			masterCell.thumbnailImageView.image = journey.thumbnailImage
 			masterCell.tintColor = UIColor.journeyLightColor
 		}

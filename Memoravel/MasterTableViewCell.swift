@@ -28,8 +28,11 @@ class MasterTableViewCell: UITableViewCell {
 		backgroundCardView.layer.shadowOffset = CGSize(width: 0, height: 0)
 		backgroundCardView.layer.shadowOpacity = 0.8
 		
-		// Set alpha values to the thumbnail image
-		self.thumbnailImageView.alpha = 0.75
+		// Set to darken a thumbnail image
+		let overlay = UIView(frame: self.thumbnailImageView.frame)
+		overlay.backgroundColor = UIColor.black
+		overlay.alpha = 0.5
+		self.thumbnailImageView.addSubview(overlay)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
