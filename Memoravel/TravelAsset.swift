@@ -15,18 +15,18 @@ Save PHAsset and relative information
 */
 class TravelAsset: NSObject, NSCoding {
 	
-	var asset: PHAsset
+	var asset: PHAsset?
 	var isLike: Bool
 	var comment: String
 	
-	init(asset: PHAsset, isLike: Bool = false, comment: String = "") {
+	init(asset: PHAsset?, isLike: Bool = false, comment: String = "") {
 		self.asset = asset
 		self.isLike = isLike
 		self.comment = comment
 	}
 	
 	override var hashValue: Int {
-		return self.asset.hashValue
+		return (self.asset?.hashValue)!
 	}
 	
 	static func == (lhs: TravelAsset, rhs: TravelAsset) -> Bool {
@@ -36,7 +36,7 @@ class TravelAsset: NSObject, NSCoding {
 	required convenience init(coder aDecoder: NSCoder) {
 		let identifier = aDecoder.decodeObject(forKey: "identifier") as! String
 		let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
-		let asset: PHAsset = (fetchResult.firstObject)!
+		let asset: PHAsset? = (fetchResult.firstObject)
 		let isLike = aDecoder.decodeBool(forKey: "isLike")
 		let comment = aDecoder.decodeObject(forKey: "comment") as! String
 		
@@ -44,7 +44,7 @@ class TravelAsset: NSObject, NSCoding {
 	}
 	
 	func encode(with aCoder: NSCoder) {
-		aCoder.encode(asset.localIdentifier, forKey: "identifier")
+		aCoder.encode(asset!.localIdentifier, forKey: "identifier")
 		aCoder.encode(isLike, forKey: "isLike")
 		aCoder.encode(comment, forKey: "comment")
 	}

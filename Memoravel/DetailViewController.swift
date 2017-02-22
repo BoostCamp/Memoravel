@@ -32,7 +32,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
 		// Show asset image in UIImageView
-		PHImageManager.default().requestImage(for: travelAsset.asset, targetSize: assetImageView.frame.size, contentMode: .aspectFill,
+		PHImageManager.default().requestImage(for: travelAsset.asset!, targetSize: assetImageView.frame.size, contentMode: .aspectFill,
 		                                      options: nil, resultHandler: { (image, info) in
 			self.assetImageView.image = image
 		})
@@ -46,7 +46,7 @@ class DetailViewController: UIViewController {
 		self.navigationController?.extendedLayoutIncludesOpaqueBars = true
 		self.automaticallyAdjustsScrollViewInsets = false
 		
-		if let location = travelAsset.asset.location {
+		if let location = travelAsset.asset!.location {
 			CLGeocoder().reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
 				if let placemark = placemarks?.first, let addressDict = placemark.addressDictionary as? [String : Any], let coordinate = placemark.location?.coordinate {
 					let mkPlacemark: MKPlacemark = MKPlacemark(coordinate: coordinate, addressDictionary: addressDict)
@@ -59,7 +59,7 @@ class DetailViewController: UIViewController {
 		}
 		
 		// Show date information in UILabel
-		if let creationDate = travelAsset.asset.creationDate {
+		if let creationDate = travelAsset.asset!.creationDate {
 			dateLabel.text = JourneyDate.formatted(date: creationDate)
 		
 		} else {

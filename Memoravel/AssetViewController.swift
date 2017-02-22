@@ -338,7 +338,7 @@ class AssetViewController: UIViewController {
 			}
 		
 			if likeAssets.count > 0 {
-				likeAssets = likeAssets.sorted(by: { ($0.asset.creationDate)! < ($1.asset.creationDate)! })
+				likeAssets = likeAssets.sorted(by: { ($0.asset?.creationDate)! < ($1.asset?.creationDate)! })
 				self.likeTravelAssetsDict[date] = likeAssets
 				likeAssets = []
 			
@@ -429,7 +429,7 @@ extension AssetViewController: UICollectionViewDelegate, UICollectionViewDataSou
 				travelAsset = (self.schedule.assetsDict[date])![indexPath.row]
 			}
 			
-			PHImageManager.default().requestImage(for: travelAsset.asset, targetSize: assetCell.assetImageView.frame.size, contentMode: .aspectFill, options: nil, resultHandler: { (image, info) in
+			PHImageManager.default().requestImage(for: travelAsset.asset!, targetSize: assetCell.assetImageView.frame.size, contentMode: .aspectFill, options: nil, resultHandler: { (image, info) in
 				assetCell.assetImageView.image = image
 			})
 			

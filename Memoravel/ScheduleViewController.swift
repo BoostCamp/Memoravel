@@ -44,7 +44,7 @@ class ScheduleViewController: UIViewController {
 		
 		// Generate assets and save it to the data structure
 		DispatchQueue.global().async {
-			self.saveAssetsToMainSchedule()
+			self.saveAssetsToSchedule()
 			self.performUpdate {
 				self.waitView.isHidden = true
 			}
@@ -83,7 +83,7 @@ class ScheduleViewController: UIViewController {
 	
 	public func callPlayJourneyModal() {
 		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "PlayJourneyViewController") as? PlayJourneyViewController {
-			controller.schedules = self.journey.schedules
+			controller.journey = self.journey
 			
 			let navController = UINavigationController(rootViewController: controller)
 			navController.navigationBar.barTintColor = UIColor.journeyMainColor
@@ -154,7 +154,7 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension ScheduleViewController {
 	
-	func saveAssetsToMainSchedule() {
+	func saveAssetsToSchedule() {
 		
 		let fetchOption = PHFetchOptions()
 		self.activityView.startAnimating()
@@ -163,6 +163,8 @@ extension ScheduleViewController {
 			
 			if $0.assetsDict.count != 0 {
 				print("Already have AssetsDict in this schedule")
+				print("Check if there's invalid PHAssets in the dictionary")
+				self.checkAssetValidity()
 				return $0
 			}
 			
@@ -211,6 +213,27 @@ extension ScheduleViewController {
 	func performUpdate(_ updates: @escaping() -> Void) {
 		DispatchQueue.main.async {
 			updates()
+		}
+	}
+	
+	// This method is called when the asset dictionary is not empty, and check validity of assets
+	func checkAssetValidity() {
+		for sIndex in 0..<self.journey.schedules.count {
+			let dates = self.journey.schedules[sIndex].assetsDict.keys
+			
+			for date in dates {
+				let assetArray: [TravelAsset] = (self.journey.schedules[sIndex].assetsDict[date])!
+				
+				for aIndex in 0..<assetArray.count {
+					let travelAsset: TravelAsset = assetArray[aIndex]
+					
+					// Check if invalid PHAsset
+					if travelAsset.asset == nil {
+						print("Found invalid asset in the dictionary and it's going to be deleted!")
+						self.journey.schedules[sIndex].assetsDict[date]?.remove(at: aIndex)
+					}
+				}
+			}
 		}
 	}
 }
@@ -296,7 +319,7 @@ extension ScheduleViewController: EditJourneyViewControllerDelegate {
 		
 		// Generate assets and save it to the data structure if the schedule has been changed
 		DispatchQueue.global().async {
-			self.saveAssetsToMainSchedule()
+			self.saveAssetsToSchedule()
 			self.performUpdate {
 				self.waitView.isHidden = true
 				
