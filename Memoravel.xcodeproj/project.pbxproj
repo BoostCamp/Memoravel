@@ -154,8 +154,8 @@
 				CCB2C1D31E4A14A60060FFB6 /* ScheduleViewController.swift */,
 				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
 				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
-				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
 				CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */,
+				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -181,8 +181,8 @@
 				CC33566D1E5071B500C58493 /* SchedulesTableViewCell.swift */,
 				CCD348D21E512BD3004BC8F0 /* AssetCollectionViewCell.swift */,
 				CC4706351E5160E4005B4277 /* AssetHeaderCollectionReusableView.swift */,
-				CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */,
 				CCD65CED1E5A802F00D5F1C3 /* EditScheduleCell.swift */,
+				CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
