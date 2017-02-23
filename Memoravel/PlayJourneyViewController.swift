@@ -9,10 +9,10 @@
 import UIKit
 import MapKit
 import Photos
+import ReplayKit
 
 class PlayJourneyViewController: UIViewController {
 	
-//	var schedules: [Schedule]!
 	var journey: Journey!
 	
 	var timer: Timer?
@@ -23,20 +23,33 @@ class PlayJourneyViewController: UIViewController {
 
 	@IBOutlet weak var mapView: MKMapView!
 	@IBOutlet weak var collectionView: UICollectionView!
-	@IBOutlet weak var informationView: UIView!
+	@IBOutlet weak var buttonView: UIView!
 	
-	// Properties for animating images
+	// MARK: - Properties for animating images
 	var progress: CGFloat = 0.0
 	var contentWidth: CGFloat = 0.0
 	var locationIndex: Int = 0
 	var scheduleOffset: [CGFloat] = [0.0]
 	
-	// Properties for Map view
+	// MARK: - Properties for Map view
 	var polyline: MKGeodesicPolyline?
 	var annotations: [MKPointAnnotation]?
 	
-	// Properties for tool bar
+	// MARK: - Properties for tool bar
 	@IBOutlet weak var bottomButton: UIButton!
+	
+	// MARK: - Properties for Recording
+	@IBOutlet weak var closingView: UIView!
+	@IBOutlet weak var journeyTitle: UILabel!
+	@IBOutlet weak var journeyDate: UILabel!
+	
+	@IBOutlet weak var heightOfButtonView: NSLayoutConstraint!
+	var previewController: RPPreviewViewController?
+	var isRecording: Bool = false
+
+	override var prefersStatusBarHidden: Bool {
+		return (self.navigationController?.isNavigationBarHidden)!
+	}
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,9 +63,13 @@ class PlayJourneyViewController: UIViewController {
 		
 		// Set the delegate of the MKMap
 		self.mapView.delegate = self
+		self.animateLocationsOnMap(index: 0)
 		
-		// Hide information view at first
-		self.informationView.isHidden = true
+		// Settings for closing view
+		self.closingView.isHidden = true
+		
+		self.journeyTitle.text = self.journey.title
+		self.journeyDate.text = "\(JourneyDate.formatted(date: self.journey.startDate))-\(JourneyDate.formatted(date: self.journey.endDate))"
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -93,29 +110,66 @@ class PlayJourneyViewController: UIViewController {
 			self.stopRecording()
 		
 		// Settings for share button
-		} else if sender.title(for: .normal) == "  Share Recorded Video" {
+		} else if sender.title(for: .normal) == "  Check the Output" {
 			self.shareVideo()
 		}
 	}
 	
 	func startRecording() {
 		print("startRecording")
-		configAutoScrollTimer()
-		self.informationView.isHidden = false
+		
+		self.navigationController?.isNavigationBarHidden = true
+		self.heightOfButtonView.constant = 0.0
+		self.isRecording = true
+		
+		// Prevent user to control collection view and map view
+		self.closingView.isHidden = false
+		
+		// Start recording
+		let recorder = RPScreenRecorder.shared()
+		
+		recorder.startRecording { (error) in
+			if let unwrappedError = error {
+				print("ERROR: \(unwrappedError)")
+			}
+		}
+		
+		// Sleep 1 second while recording is ready
+		sleep(1)
+		
+		UIView.animate(withDuration: 4.0, animations: {
+			self.closingView.alpha = 0.02
+			
+		}) { (isFinished) in
+			if isFinished {
+				self.configAutoScrollTimer()
+			}
+		}
 	}
 	
 	func stopRecording() {
 		print("stopRecording")
 		deconfigAutoScrollTimer()
-		self.informationView.isHidden = true
+		
+		self.closingView.isHidden = true
+		self.isRecording = false
 		
 		self.collectionView.contentOffset.x = 0.0
 		self.progress = 0.0
 		self.animateLocationsOnMap(index: 0)
+		self.navigationController?.isNavigationBarHidden = false
+		
+		self.heightOfButtonView.constant = 44.0
 	}
 	
 	func shareVideo() {
 		// Add share actions
+		if let controller = self.previewController {
+			self.present(controller, animated: true, completion: nil)
+		
+		} else {
+			print("Could not share the video :-[")
+		}
 	}
 }
 
@@ -230,7 +284,6 @@ extension PlayJourneyViewController {
 	}
 	
 	func autoScrollView() {
-		print("autoScrollView")
 		let initialPoint = CGPoint(x: self.progress, y: 0.0)
 		
 		if __CGPointEqualToPoint(initialPoint, self.collectionView.contentOffset) {
@@ -251,15 +304,39 @@ extension PlayJourneyViewController {
 				self.progress += 5.0
 				self.contentWidth += 5.0
 			
+			// End of animation
 			} else {
-				deconfigAutoScrollTimer()
-				self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-				self.animateLocationsOnMap(index: 0)
+				self.deconfigAutoScrollTimer()
+				self.journeyTitle.isHidden = true
+				self.journeyDate.isHidden = true
 				
-				self.informationView.isHidden = true
-				self.bottomButton.setTitle("  Share Recorded Video", for: .normal)
-				self.bottomButton.setImage(#imageLiteral(resourceName: "share_bold"), for: .normal)
-				return
+				UIView.animate(withDuration: 2.0, animations: {
+					self.closingView.alpha = 1.0
+					
+				}, completion: { (isFinished) in
+					if isFinished {
+						
+						let recorder = RPScreenRecorder.shared()
+						recorder.stopRecording { (preview, error) in
+							if let unwrappedPreview = preview {
+								unwrappedPreview.previewControllerDelegate = self
+								self.previewController = unwrappedPreview
+							}
+						}
+						
+						self.closingView.isHidden = true
+						self.isRecording = false
+						self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+						self.animateLocationsOnMap(index: 0)
+						
+						self.navigationController?.isNavigationBarHidden = false
+						
+						self.bottomButton.setTitle("  Check the Output", for: .normal)
+						self.bottomButton.setImage(#imageLiteral(resourceName: "small_check"), for: .normal)
+						self.heightOfButtonView.constant = 44.0
+						return
+					}
+				})
 			}
 			
 			let offsetPoint: CGPoint = CGPoint(x: self.progress, y: 0.0)
@@ -305,6 +382,27 @@ extension PlayJourneyViewController {
 			let previousIndex: Int = self.scheduleOffset.count - 1
 			let offsetValue: CGFloat = CGFloat(aScheduleAsset.count) + self.scheduleOffset[previousIndex]
 			self.scheduleOffset.append(offsetValue)
+		}
+	}
+}
+
+extension PlayJourneyViewController: RPPreviewViewControllerDelegate {
+	
+	func previewControllerDidFinish(_ previewController: RPPreviewViewController) {
+		self.dismiss(animated: true)
+	}
+}
+
+extension PlayJourneyViewController {
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		if self.isRecording {
+			if self.heightOfButtonView.constant == 0 {
+				self.heightOfButtonView.constant = 44
+			
+			} else {
+				self.heightOfButtonView.constant = 0
+			}
 		}
 	}
 }
