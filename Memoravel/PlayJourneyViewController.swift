@@ -131,18 +131,16 @@ class PlayJourneyViewController: UIViewController {
 		recorder.startRecording { (error) in
 			if let unwrappedError = error {
 				print("ERROR: \(unwrappedError)")
-			}
-		}
-		
-		// Sleep 1 second while recording is ready
-		sleep(1)
-		
-		UIView.animate(withDuration: 4.0, animations: {
-			self.closingView.alpha = 0.02
 			
-		}) { (isFinished) in
-			if isFinished {
-				self.configAutoScrollTimer()
+			} else {
+				UIView.animate(withDuration: 3.0, animations: {
+					self.closingView.alpha = 0.02
+					
+				}) { (isFinished) in
+					if isFinished {
+						self.configAutoScrollTimer()
+					}
+				}
 			}
 		}
 	}
@@ -233,6 +231,14 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 		self.mapView.setRegion(region, animated: true)
 	}
 	
+	// When animation is finished, show the center of schedules location
+	public func animateCenterLocationOnMap() {
+		let center = JourneyCoordinate.getCenterCoord(LocationPoints: self.journey.getCoordinatesOfJourney())
+		let span = MKCoordinateSpanMake(30.0, 30.0)
+		let region = MKCoordinateRegionMake(center, span)
+		self.mapView.setRegion(region, animated: true)
+	}
+	
 	func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
 		if overlay is MKPolyline {
 			let lenderer = MKPolylineRenderer(overlay: overlay);
@@ -290,14 +296,19 @@ extension PlayJourneyViewController {
 			let loIndex: Int = self.checkLocationIndex(self.progress / self.widthOfCell)
 			
 			if self.locationIndex != loIndex {
+				print("self.locationIndex: \(self.locationIndex)")
+				print("loIndex: \(loIndex)")
+				
 				self.locationIndex = loIndex
-				self.animateLocationsOnMap(index: self.locationIndex)
+				
+				if loIndex != 0 {
+					self.animateLocationsOnMap(index: self.locationIndex)
+				}
 			}
 			
 			if (self.progress / self.widthOfCell) == self.scheduleOffset[self.locationIndex] {
 				self.animateLocationsOnMap(index: self.locationIndex)
 				self.locationIndex += 1
-				
 			}
 			
 			if self.progress < self.collectionView.contentSize.width {
@@ -310,6 +321,8 @@ extension PlayJourneyViewController {
 				self.journeyTitle.isHidden = true
 				self.journeyDate.isHidden = true
 				
+				self.animateCenterLocationOnMap()
+				
 				UIView.animate(withDuration: 2.0, animations: {
 					self.closingView.alpha = 1.0
 					
@@ -321,22 +334,24 @@ extension PlayJourneyViewController {
 							if let unwrappedPreview = preview {
 								unwrappedPreview.previewControllerDelegate = self
 								self.previewController = unwrappedPreview
+								
+								// Settings when recording is done successfully
+								self.closingView.isHidden = true
+								self.isRecording = false
+								self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+								self.animateLocationsOnMap(index: 0)
+								
+								self.navigationController?.isNavigationBarHidden = false
+								
+								self.bottomButton.setTitle("  Check the Output", for: .normal)
+								self.bottomButton.setImage(#imageLiteral(resourceName: "small_check"), for: .normal)
+								self.heightOfButtonView.constant = 44.0
 							}
 						}
-						
-						self.closingView.isHidden = true
-						self.isRecording = false
-						self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
-						self.animateLocationsOnMap(index: 0)
-						
-						self.navigationController?.isNavigationBarHidden = false
-						
-						self.bottomButton.setTitle("  Check the Output", for: .normal)
-						self.bottomButton.setImage(#imageLiteral(resourceName: "small_check"), for: .normal)
-						self.heightOfButtonView.constant = 44.0
-						return
 					}
 				})
+				
+				return
 			}
 			
 			let offsetPoint: CGPoint = CGPoint(x: self.progress, y: 0.0)

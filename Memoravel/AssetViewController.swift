@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import MapKit
 
 class AssetViewController: UIViewController {
 
@@ -477,6 +478,7 @@ extension AssetViewController: UICollectionViewDelegate, UICollectionViewDataSou
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let controller = segue.destination as? DetailViewController, let travelAsset = sender as? TravelAsset {
 			controller.travelAsset = travelAsset
+			controller.location = self.schedule.location
 		}
 	}
 }
@@ -486,7 +488,7 @@ extension AssetViewController: UICollectionViewDelegate, UICollectionViewDataSou
 extension AssetViewController: UICollectionViewDelegateFlowLayout {
 	
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		let width: CGFloat = collectionView.frame.width / 3 - 1
+		let width: CGFloat = collectionView.frame.width / 4 - 1
 		return CGSize(width: width, height: width)
 	}
 	

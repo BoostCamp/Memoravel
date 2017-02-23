@@ -13,6 +13,7 @@ import MapKit
 class DetailViewController: UIViewController {
 	
 	var travelAsset: TravelAsset!
+	var location: MKPlacemark!
 	
 	@IBOutlet weak var backgroundCardView: UIView!
 	@IBOutlet weak var assetImageView: UIImageView!
@@ -55,7 +56,7 @@ class DetailViewController: UIViewController {
 			})
 			
 		} else {
-			locationLabel.text = "No location information"
+			locationLabel.text = JourneyAddress.parseDetailAddress(self.location)
 		}
 		
 		// Show date information in UILabel

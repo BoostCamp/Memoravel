@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC26E9BB1E5EEA73006AE190 /* JourneyCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC26E9BA1E5EEA73006AE190 /* JourneyCoordinate.swift */; };
 		CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */; };
 		CC312FBB1E583A020099A6BC /* PlayImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */; };
 		CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBC1E5849400099A6BC /* DateExtension.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		6D8B660C73D09763ADC01E11 /* Pods-Memoravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.debug.xcconfig"; sourceTree = "<group>"; };
+		CC26E9BA1E5EEA73006AE190 /* JourneyCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyCoordinate.swift; sourceTree = "<group>"; };
 		CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayJourneyViewController.swift; sourceTree = "<group>"; };
 		CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC312FBC1E5849400099A6BC /* DateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				CCB2C1F21E4AE8850060FFB6 /* JourneyColor.swift */,
 				CCB265EA1E4C8E9500C35E7B /* JourneyAddress.swift */,
 				CC312FBC1E5849400099A6BC /* DateExtension.swift */,
+				CC26E9BA1E5EEA73006AE190 /* JourneyCoordinate.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */,
 				CCB265E91E4BEA7D00C35E7B /* LocationSearchTable.swift in Sources */,
 				CCB2C1EB1E4ADE330060FFB6 /* MasterTableViewCell.swift in Sources */,
+				CC26E9BB1E5EEA73006AE190 /* JourneyCoordinate.swift in Sources */,
 				CCB2C1E61E4AB45A0060FFB6 /* Schedule.swift in Sources */,
 				CCB2C1C41E4A0A920060FFB6 /* MasterViewController.swift in Sources */,
 				CCB2C1D81E4A169B0060FFB6 /* DetailViewController.swift in Sources */,
