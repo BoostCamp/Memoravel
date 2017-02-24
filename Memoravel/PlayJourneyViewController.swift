@@ -16,7 +16,7 @@ class PlayJourneyViewController: UIViewController {
 	var journey: Journey!
 	
 	var timer: Timer?
-	let widthOfCell: CGFloat = 150.0
+	let widthOfCell: CGFloat = 220.0
 	
 	var scheduleAssets = [[TravelAsset]]()
 	var allAssets = [TravelAsset]()
@@ -147,17 +147,35 @@ class PlayJourneyViewController: UIViewController {
 	
 	func stopRecording() {
 		print("stopRecording")
-		deconfigAutoScrollTimer()
 		
-		self.closingView.isHidden = true
-		self.isRecording = false
-		
-		self.collectionView.contentOffset.x = 0.0
-		self.progress = 0.0
-		self.animateLocationsOnMap(index: 0)
-		self.navigationController?.isNavigationBarHidden = false
-		
-		self.heightOfButtonView.constant = 44.0
+		let recorder = RPScreenRecorder.shared()
+		if recorder.isRecording {
+			recorder.stopRecording(handler: { (previewController, error) in
+				if let unwrappedError = error {
+					print("ERROR: \(unwrappedError.localizedDescription)")
+				
+				} else {
+					// Settings when the user stops recording
+					self.deconfigAutoScrollTimer()
+					
+					self.journeyTitle.isHidden = false
+					self.journeyDate.isHidden = false
+					self.closingView.isHidden = true
+					self.closingView.alpha = 1.0
+					
+					self.isRecording = false
+					self.collectionView.contentOffset = CGPoint(x: 0.0, y: 0.0)
+					self.progress = 0.0
+					self.contentWidth = 0.0
+					self.locationIndex = 0
+					
+					self.animateLocationsOnMap(index: 0)
+					self.navigationController?.isNavigationBarHidden = false
+					
+					self.heightOfButtonView.constant = 44.0
+				}
+			})
+		}
 	}
 	
 	func shareVideo() {
@@ -296,9 +314,6 @@ extension PlayJourneyViewController {
 			let loIndex: Int = self.checkLocationIndex(self.progress / self.widthOfCell)
 			
 			if self.locationIndex != loIndex {
-				print("self.locationIndex: \(self.locationIndex)")
-				print("loIndex: \(loIndex)")
-				
 				self.locationIndex = loIndex
 				
 				if loIndex != 0 {
@@ -382,10 +397,10 @@ extension PlayJourneyViewController {
 	func appendScheduleAssets() {
 		for schedule in self.journey.schedules {
 			var aScheduleAsset = [TravelAsset]()
-			let keys = schedule.assetsDict.keys
+			let dates = schedule.assetsDict.keys
 			
-			for key in keys {
-				let travelAssets: [TravelAsset] = schedule.assetsDict[key]!
+			for date in dates {
+				let travelAssets: [TravelAsset] = schedule.assetsDict[date]!
 				for asset in travelAssets {
 					aScheduleAsset.append(asset)
 					self.allAssets.append(asset)
@@ -394,10 +409,20 @@ extension PlayJourneyViewController {
 			
 			self.scheduleAssets.append(aScheduleAsset)
 			
+			print("\(JourneyAddress.parseTitleAddress(schedule.location)!) : [\(aScheduleAsset.count)]")
+			
+			
 			let previousIndex: Int = self.scheduleOffset.count - 1
 			let offsetValue: CGFloat = CGFloat(aScheduleAsset.count) + self.scheduleOffset[previousIndex]
 			self.scheduleOffset.append(offsetValue)
+			
 		}
+		
+		print("scheduleOffset")
+		for offset in self.scheduleOffset {
+			print(offset)
+		}
+
 	}
 }
 
