@@ -3,7 +3,8 @@
 **Organise your travel assets swiftly!**    
 Memoravel manages your travel images and makes a video on your own. 
 You can share your travel images and videos through Facebook, Instagram and so on.
-Enjoy Memoravel :-)
+Enjoy Memoravel :-)     
+You can see the introduction page [here](https://boostcamp.github.io/Memoravel/).
 
 ## Contents
 * [Features](#features)
