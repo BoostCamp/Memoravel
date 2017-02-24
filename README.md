@@ -7,7 +7,7 @@ Enjoy Memoravel :-)
 
 ## Contents
 * [Features](#features)
-* [Implemented Skills](#implemented_skills)
+* [Implemented Skills](#implemented-skills)
 * [Environments](#environments)
 * [Demo](#demo)
 * [Author](#author)
