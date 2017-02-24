@@ -7,7 +7,7 @@ Enjoy Memoravel :-)
 
 ## Contents
 * [Features](#features)
-* [Implemented Skills](#implemented skills)
+* [Implemented Skills](#implemented_skills)
 * [Environments](#environments)
 * [Demo](#demo)
 * [Author](#author)
@@ -41,4 +41,4 @@ Enjoy Memoravel :-)
 [JUNYEONG YOO](https://github.com/chizcake)
 
 ## License
-Memoravel is available under the MIT license. See the [LICENSE](.LICENSE) file for more info.
+Memoravel is available under the MIT license. See the [LICENSE](./LICENSE) file for more info.
