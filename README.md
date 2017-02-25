@@ -36,7 +36,7 @@ You can see the introduction page [here](https://boostcamp.github.io/Memoravel/)
 * Only iPhone devices
 
 ## Demo
-<div style="position:relative;height:0;padding-bottom:56.25%"><iframe src="https://www.youtube.com/embed/f3B7JtGrsAs?ecver=2" width="640" height="360" frameborder="0" style="position:absolute;width:100%;height:100%;left:0" allowfullscreen></iframe></div>
+[![MEMORAVEL DEMO](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
 
 ## Author
 [JUNYEONG YOO](https://github.com/chizcake)
