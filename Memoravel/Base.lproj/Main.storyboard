@@ -602,7 +602,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ImageCell" id="NrK-ba-Hyf" customClass="CalendarCollectionViewCell" customModule="Memoravel" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="9.5" width="109" height="109"/>
+                                        <rect key="frame" x="0.0" y="10" width="109" height="109"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="109" height="109"/>
@@ -931,18 +931,18 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="57"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hcf-Rw-fRj" id="vhA-Bw-1Mm">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="56.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qIn-y6-x5e">
-                                            <rect key="frame" x="15" y="11" width="33.5" height="20.5"/>
+                                            <rect key="frame" x="15" y="10" width="34" height="21"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                             <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="da8-l1-qAw">
-                                            <rect key="frame" x="15" y="31.5" width="44" height="14.5"/>
+                                            <rect key="frame" x="15" y="31" width="44" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -1369,13 +1369,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check your journey spots on the map" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6zL-hX-VlP">
-                                <rect key="frame" x="16" y="15" width="235.5" height="18"/>
+                                <rect key="frame" x="16" y="5" width="235.5" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="zpI-kJ-1Ur"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                 <color key="textColor" red="0.58431372550000005" green="0.61960784310000006" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SEi-8I-Bue" userLabel="Background Card View">
-                                <rect key="frame" x="13" y="44" width="350" height="230"/>
+                                <rect key="frame" x="13" y="34" width="350" height="230"/>
                                 <subviews>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jOy-h3-Zm5">
                                         <rect key="frame" x="0.0" y="0.0" width="350" height="230"/>
@@ -1392,20 +1395,23 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TUi-Qw-aw0" userLabel="Seperator View">
-                                <rect key="frame" x="12" y="286" width="350" height="0.5"/>
+                                <rect key="frame" x="12" y="276" width="350" height="0.5"/>
                                 <color key="backgroundColor" red="0.58431372550000005" green="0.61960784310000006" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="QlY-VQ-gQG"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check your journey schedules" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GyE-z8-xYU">
-                                <rect key="frame" x="16" y="298.5" width="187.5" height="18"/>
+                                <rect key="frame" x="16" y="288.5" width="187.5" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="9rk-Zg-OSW"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="15"/>
                                 <color key="textColor" red="0.58431372550000005" green="0.61960784310000006" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MpX-Re-Wyz">
-                                <rect key="frame" x="0.0" y="323" width="375" height="236"/>
+                                <rect key="frame" x="0.0" y="313" width="375" height="236"/>
                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="236" id="34s-os-bXl"/>
@@ -1488,6 +1494,9 @@
                             </tableView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2A-Ae-34p">
                                 <rect key="frame" x="0.0" y="559" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="nWM-bE-hZJ"/>
+                                </constraints>
                                 <items/>
                                 <color key="tintColor" red="0.2274509804" green="0.25490196079999999" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                             </toolbar>
@@ -1539,9 +1548,8 @@
                             <constraint firstItem="SEi-8I-Bue" firstAttribute="centerX" secondItem="GLU-Vl-ZqR" secondAttribute="centerX" id="jbU-WX-f8k"/>
                             <constraint firstItem="7Sy-rP-MBT" firstAttribute="centerX" secondItem="GLU-Vl-ZqR" secondAttribute="centerX" id="mQ0-21-eaf"/>
                             <constraint firstItem="7Sy-rP-MBT" firstAttribute="height" secondItem="GLU-Vl-ZqR" secondAttribute="height" id="u0z-xB-8ZW"/>
-                            <constraint firstItem="t2A-Ae-34p" firstAttribute="top" secondItem="MpX-Re-Wyz" secondAttribute="bottom" id="uM9-eO-3v5"/>
+                            <constraint firstItem="t2A-Ae-34p" firstAttribute="top" secondItem="MpX-Re-Wyz" secondAttribute="bottom" constant="10" id="uM9-eO-3v5"/>
                             <constraint firstItem="MpX-Re-Wyz" firstAttribute="centerX" secondItem="GLU-Vl-ZqR" secondAttribute="centerX" id="vh7-5s-FSc"/>
-                            <constraint firstItem="6zL-hX-VlP" firstAttribute="top" secondItem="Nw1-HB-4Gl" secondAttribute="bottom" constant="15" id="wth-Bw-J8C"/>
                             <constraint firstItem="t2A-Ae-34p" firstAttribute="centerX" secondItem="GLU-Vl-ZqR" secondAttribute="centerX" id="yO3-aj-pag"/>
                             <constraint firstAttribute="leadingMargin" secondItem="6zL-hX-VlP" secondAttribute="leading" id="zKm-Ak-w8C"/>
                         </constraints>
