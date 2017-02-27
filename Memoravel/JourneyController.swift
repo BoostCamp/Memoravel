@@ -34,6 +34,7 @@ class JourneyController {
 	// Save new journey instance to the array
 	func addJourney(_ journey: Journey) {
 		journeys.append(journey)
+		self.journeys = self.journeys.sorted(by: { $0.startDate < $1.startDate })
 	}
 	
 	// Return number of Journey instances in the array

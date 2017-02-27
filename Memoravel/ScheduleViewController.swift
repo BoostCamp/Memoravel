@@ -82,17 +82,8 @@ class ScheduleViewController: UIViewController {
 	// MARK: - Method for calling modal view for playing journey schedules
 	
 	public func callPlayJourneyModal() {
-		if let controller = self.storyboard?.instantiateViewController(withIdentifier: "PlayJourneyViewController") as? PlayJourneyViewController {
-			controller.journey = self.journey
-			
-			let navController = UINavigationController(rootViewController: controller)
-			navController.navigationBar.barTintColor = UIColor.journeyMainColor
-			navController.navigationBar.tintColor = UIColor.journeyLightColor
-			navController.navigationBar.barStyle = .black
-			navController.navigationBar.isTranslucent = false
-			
-			self.present(navController, animated: true, completion: nil)
-		}
+		
+		self.performSegue(withIdentifier: "ShowSelectView", sender: self)
 	}
 	
 	// Edit Journey schedules
@@ -146,6 +137,9 @@ extension ScheduleViewController: UITableViewDataSource, UITableViewDelegate {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let controller = segue.destination as? AssetViewController, let schedule = sender as? Schedule {
 			controller.schedule = schedule
+		
+		} else if let controller = segue.destination as? SelectViewController {
+			controller.journey = self.journey
 		}
 	}
 }
