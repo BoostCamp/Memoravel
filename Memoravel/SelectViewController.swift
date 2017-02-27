@@ -19,6 +19,7 @@ class SelectViewController: UIViewController {
 	
 	// 선택된 cell 을 묶어서 PlayJourneyViewController 에 보내준다.
 	var selectedAssets = [MKPlacemark : Set<TravelAsset>]()
+	var selectedIndexPath = Set<IndexPath>()
 	
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var nextButton: UIBarButtonItem!
@@ -33,25 +34,31 @@ class SelectViewController: UIViewController {
 		
 		// assetsBySchedule 에 데이터를 넣기 위한 함수를 호출
 		self.addAssetsBySchedule()
+
+    }
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		
 		// 선택된 이미지가 없을 경우에 다음 화면으로 넘어가지 못하도록 설정한다.
 		self.nextButton.isEnabled = false
-    }
+	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		
-		// TODO: PerformSegue 로 다음화면으로 넘어갈 때, 혹은 현재 화면에서 이전 화면으로 돌아갈 때
-		// 선택된 cell 을 초기화한다.
+		// PerformSegue 로 다음화면으로 넘어갈 때, 혹은 현재 화면에서 이전 화면으로 돌아갈 때 선택된 cell 을 초기화한다.
 		if self.selectedAssets.count == 0 { return }
 
-		// 모든 items 을 순회하면서 effect view 를 숨겨준다.
-		for section in 0..<self.collectionView.numberOfSections {
-			for row in 0..<self.collectionView.numberOfItems(inSection: section) {
-				self.collectionView.deselectItem(at: IndexPath(row: row, section: section) , animated: false)
+		// 선택된 collection view items 을 deselect 하고 effect view 를 숨겨준다.
+		for indexPath in self.selectedIndexPath {
+			self.collectionView.deselectItem(at: indexPath, animated: false)
+			if let selectCell = self.collectionView.cellForItem(at: indexPath) as? SelectCollectionViewCell {
+				selectCell.effectView.isHidden = true
 			}
 		}
-
+		
+		self.selectedIndexPath.removeAll()
 		
 		// selectedAssets 을 초기화한다.
 		let locations = self.selectedAssets.keys
@@ -81,9 +88,7 @@ class SelectViewController: UIViewController {
 	}
 	
 	@IBAction func moveToPlayJourney(_ sender: Any) {
-		// 현재 선택된 이미지가 selectedAssets dictionary 에서 set 의 형태로 저장이 되어 있으므로
-		// 각 set 을 날짜순으로 sorting 한 후에 Play Journey 로 보내도록 한다.
-		
+		// 현재 선택된 이미지가 selectedAssets dictionary 에서 set 의 형태로 저장이 되어 있으므로 각 set 을 날짜순으로 sorting 한 후에 Play Journey 로 보내도록 한다.
 		var resultAssets = [MKPlacemark : [TravelAsset]]()
 		let locations = self.selectedAssets.keys
 		
@@ -94,23 +99,16 @@ class SelectViewController: UIViewController {
 			}
 		}
 		
-		// TODO: DELETE THIS TEST CODE
-		let aLocations = resultAssets.keys
-		
-		for location in aLocations {
-			print("\(JourneyAddress.parseTitleAddress(location)!) 에 저장된 데이터를 보여줍니다.")
-			
-			for asset in resultAssets[location]! {
-				print(JourneyDate.localTime(date: (asset.asset?.creationDate)!))
-			}
-		}
-		
-		self.performSegue(withIdentifier: "ShowPlayView", sender: self)
+		self.performSegue(withIdentifier: "ShowPlayView", sender: resultAssets)
 	}
 	
-	// TODO: PlayJourneyViewController 로 resultAssets 와 self.journey 를 보내준다.
+	// TODO: PlayJourneyViewController 로 resultAssets 와 self.journey.schedules 를 보내준다.
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		<#code#>
+		if let controller = segue.destination as? PlayJourneyViewController, let resultAssets = sender as? [MKPlacemark : [TravelAsset]] {
+			controller.journey = self.journey
+			controller.schedules = self.journey.schedules
+			controller.resultAssets = resultAssets
+		}
 	}
 	
 }
@@ -166,6 +164,7 @@ extension SelectViewController: UICollectionViewDelegate, UICollectionViewDataSo
 			}
 		
 			self.selectedAssets[location]?.insert(self.assetsBySchedule[indexPath.section][indexPath.row])
+			self.selectedIndexPath.insert(indexPath)
 			
 			// TODO: DELETE THIS TEST CODE
 			print("\(JourneyAddress.parseTitleAddress(location)!) 의 데이터 개수: \((self.selectedAssets[location]?.count)!)")
@@ -180,6 +179,7 @@ extension SelectViewController: UICollectionViewDelegate, UICollectionViewDataSo
 			selectCell.effectView.isHidden = true
 			let location: MKPlacemark = self.journey.schedules[indexPath.section].location
 			let _ = self.selectedAssets[location]?.remove(self.assetsBySchedule[indexPath.section][indexPath.row])
+			self.selectedIndexPath.remove(indexPath)
 			
 			// TODO: DELETE THIS TEST CODE
 			print("\(JourneyAddress.parseTitleAddress(location)!) 의 데이터 개수: \((self.selectedAssets[location]?.count)!)")

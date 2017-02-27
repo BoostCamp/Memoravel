@@ -2,83 +2,80 @@
 //  PlayJourneyViewController.swift
 //  Memoravel
 //
-//  Created by JUNYEONG.YOO on 2/18/17.
+//  Created by JUNYEONG.YOO on 2/27/17.
 //  Copyright © 2017 Boostcamp. All rights reserved.
 //
 
 import UIKit
-import MapKit
 import Photos
+import MapKit
 import ReplayKit
 
 class PlayJourneyViewController: UIViewController {
 	
 	var journey: Journey!
+	var schedules: [Schedule]!
+	var resultAssets: [MKPlacemark : [TravelAsset]]!
 	
-	var timer: Timer?
-	let widthOfCell: CGFloat = 220.0
-	
-	var scheduleAssets = [[TravelAsset]]()
+	// 모든 이미지를 collection view 에 담아서 보여줘야 하므로, 이미지를 하나의 배열에 저장
 	var allAssets = [TravelAsset]()
-
-	@IBOutlet weak var mapView: MKMapView!
-	@IBOutlet weak var collectionView: UICollectionView!
-	@IBOutlet weak var buttonView: UIView!
 	
-	// MARK: - Properties for animating images
+	// Collection view 를 auto scrolling 하기 위한 properties 를 정의
+	var timer: Timer?
 	var progress: CGFloat = 0.0
 	var contentWidth: CGFloat = 0.0
 	var locationIndex: Int = 0
 	var scheduleOffset: [CGFloat] = [0.0]
+	var widthOfCell: CGFloat = 220.0
 	
-	// MARK: - Properties for Map view
+	// MapView 에 annotations 과 polyline 을 그리기 위한 properties 를 정의
 	var polyline: MKGeodesicPolyline?
 	var annotations: [MKPointAnnotation]?
 	
-	// MARK: - Properties for tool bar
-	@IBOutlet weak var bottomButton: UIButton!
-	
-	// MARK: - Properties for Recording
+	// Closing view 와 관련된 properties
 	@IBOutlet weak var closingView: UIView!
 	@IBOutlet weak var journeyTitle: UILabel!
 	@IBOutlet weak var journeyDate: UILabel!
 	
-	@IBOutlet weak var heightOfButtonView: NSLayoutConstraint!
+	// View Recording 과 관련된 properties 를 정의
 	var previewController: RPPreviewViewController?
 	var isRecording: Bool = false
-
+	
+	// Recording 을 시작하면, navigation bar 와 status bar 를 모두 hide
 	override var prefersStatusBarHidden: Bool {
 		return (self.navigationController?.isNavigationBarHidden)!
 	}
 	
+	// Bottom view 와 관련된 properties 를 정의
+	@IBOutlet weak var bottomButton: UIButton!
+	@IBOutlet weak var bottomViewHeight: NSLayoutConstraint!
+	
+	@IBOutlet weak var mapView: MKMapView!
+	@IBOutlet weak var collectionView: UICollectionView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		// Set collection view
+		// Collection view 의 기본 세팅
 		self.collectionView.delegate = self
 		self.collectionView.dataSource = self
 		
-		// Extract schedule assets from schedules array
-		self.appendScheduleAssets()
-		
-		// Set the delegate of the MKMap
+		// Map view 의 기본 세팅
 		self.mapView.delegate = self
 		self.animateLocationsOnMap(index: 0)
 		
-		// Settings for closing view
+		// Closing view 의 기본 세팅
 		self.closingView.isHidden = true
-		
 		self.journeyTitle.text = self.journey.title
 		self.journeyDate.text = "\(JourneyDate.formatted(date: self.journey.startDate))-\(JourneyDate.formatted(date: self.journey.endDate))"
+		
+		// resultAssets 에서 모든 TravelAssets 을 allAssets 배열에 저장한다
+		self.appendAllAssetsInArray()
     }
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
-		deconfigAutoScrollTimer()
+		self.deconfigAutoScrollTimer()
 		
 		// Delete all overlays of Map view
 		for overlay in self.mapView.overlays {
@@ -91,39 +88,59 @@ class PlayJourneyViewController: UIViewController {
 		}
 	}
 	
-	@IBAction func closeModal(_ sender: Any) {
-		self.timer?.invalidate()
-		self.dismiss(animated: true, completion: nil)
-	}
-	
-	@IBAction func buttonAction(_ sender: UIButton) {
+	@IBAction func bottomButtonAction(_ sender: UIButton) {
 		// Settings when the button is waiting for user action to record
 		if sender.title(for: .normal) == "  Start Recording" {
 			sender.setTitle("  Stop Recording", for: .normal)
 			sender.setImage(#imageLiteral(resourceName: "warning"), for: .normal)
 			self.startRecording()
-		
-		// Settings when the botton is waiting for user to stop recording
+			
+			// Settings when the botton is waiting for user to stop recording
 		} else if sender.title(for: .normal) == "  Stop Recording" {
+			print("button is touched by the user")
 			sender.setTitle("  Start Recording", for: .normal)
 			sender.setImage(#imageLiteral(resourceName: "recording"), for: .normal)
 			self.stopRecording()
-		
-		// Settings for share button
+			
+			// Settings for share button
 		} else if sender.title(for: .normal) == "  Check the Output" {
 			self.shareVideo()
 		}
 	}
 	
-	func startRecording() {
-		print("startRecording")
+	func appendAllAssetsInArray() {
+		// TravelAssets 을 append 할 때, 사용자의 여행 경로 순으로 append 를 해야한다.
+		for schedule in self.schedules {
+			if let assets = self.resultAssets[schedule.location] {
+				print("\(JourneyAddress.parseTitleAddress(schedule.location)!) 의 assets 을 배열에 저장합니다.")
+				for asset in assets {
+					self.allAssets.append(asset)
+				}
+				
+				let previousIndex: Int = self.scheduleOffset.count - 1
+				let offsetValue: CGFloat = CGFloat(assets.count) + self.scheduleOffset[previousIndex]
+				self.scheduleOffset.append(offsetValue)
+			}
+		}
 		
+		print("allAssets 에 저장된 assets 의 개수: \(self.allAssets.count)")
+	}
+}
+
+// MARK: - Recording 과 연관된 전반적인 함수들을 정의
+
+extension PlayJourneyViewController {
+	
+	// 사용자가 녹화를 시작할 때 호출되는 함수
+	func startRecording() {
 		self.navigationController?.isNavigationBarHidden = true
-		self.heightOfButtonView.constant = 0.0
+		self.bottomViewHeight.constant = 0.0
 		self.isRecording = true
 		
-		// Prevent user to control collection view and map view
+		// 녹화가 시작되었을 때 사용자가 지도와 사진을 건드리지 못하도록 closing view 활성화
 		self.closingView.isHidden = false
+		self.journeyTitle.isHidden = false
+		self.journeyDate.isHidden = false
 		
 		// Start recording
 		let recorder = RPScreenRecorder.shared()
@@ -131,7 +148,7 @@ class PlayJourneyViewController: UIViewController {
 		recorder.startRecording { (error) in
 			if let unwrappedError = error {
 				print("ERROR: \(unwrappedError)")
-			
+				
 			} else {
 				UIView.animate(withDuration: 3.0, animations: {
 					self.closingView.alpha = 0.02
@@ -139,21 +156,22 @@ class PlayJourneyViewController: UIViewController {
 				}) { (isFinished) in
 					if isFinished {
 						self.configAutoScrollTimer()
+						self.journeyTitle.isHidden = true
+						self.journeyDate.isHidden = true
 					}
 				}
 			}
 		}
 	}
 	
+	// 사용자가 녹화를 중간에 그만둘 때 호출되는 함수
 	func stopRecording() {
-		print("stopRecording")
-		
 		let recorder = RPScreenRecorder.shared()
 		if recorder.isRecording {
 			recorder.stopRecording(handler: { (previewController, error) in
 				if let unwrappedError = error {
 					print("ERROR: \(unwrappedError.localizedDescription)")
-				
+					
 				} else {
 					// Settings when the user stops recording
 					self.deconfigAutoScrollTimer()
@@ -172,24 +190,43 @@ class PlayJourneyViewController: UIViewController {
 					self.animateLocationsOnMap(index: 0)
 					self.navigationController?.isNavigationBarHidden = false
 					
-					self.heightOfButtonView.constant = 44.0
+					self.bottomViewHeight.constant = 44.0
 				}
 			})
 		}
 	}
 	
+	// 사용자가 녹화를 마치고 비디오를 공유할 때 호출되는 함수
 	func shareVideo() {
 		// Add share actions
 		if let controller = self.previewController {
 			self.present(controller, animated: true, completion: nil)
-		
+			
 		} else {
 			print("Could not share the video :-[")
 		}
 	}
 }
 
-// MARK: - Methods for handling Map view
+extension PlayJourneyViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+	
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+		return self.allAssets.count
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlayImageCell", for: indexPath)
+		
+		let travelAsset: TravelAsset = self.allAssets[indexPath.row]
+		if let playCell = cell as? PlayImageCollectionViewCell {
+			PHImageManager.default().requestImage(for: travelAsset.asset!, targetSize: playCell.imageView.frame.size, contentMode: .aspectFill, options: nil, resultHandler: { (image, info) in
+				playCell.imageView.image = image
+			})
+		}
+		
+		return cell
+	}
+}
 
 extension PlayJourneyViewController: MKMapViewDelegate {
 	
@@ -211,20 +248,30 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 	}
 	
 	public func animateLocationsOnMap(index: Int) {
-		var coordinates: [CLLocationCoordinate2D] = self.journey.getCoordinatesOfJourney()
+		var coordinates = [CLLocationCoordinate2D]()
+		var schedules = [Schedule]()
 		
+		// 사용자가 선택한 asset 의 장소를 coordinates 로 변환하여 배열에 저장
+		for schedule in self.schedules {
+			if self.resultAssets[schedule.location] != nil {
+				let coordinate = schedule.location.coordinate
+				coordinates.append(coordinate)
+				schedules.append(schedule)
+			}
+		}
+		
+		// 기존에 MapView 에 입력한 annotations 과 polylines 이 없다면, 새로 만들어준다.
 		if (self.mapView.annotations.count == 0) && (self.mapView.overlays.count == 0) {
 			var annotations = [MKPointAnnotation]()
-			let schedules: [Schedule] = self.journey.schedules
 			
-			// Append all annotations of the schedules
+			// annotations 을 map view 에 추가
 			for schedule in schedules {
-				let location: MKPlacemark = schedule.location
+				let selectedLocation: MKPlacemark = schedule.location
 				let annotation = MKPointAnnotation()
-				annotation.coordinate = location.coordinate
-				annotation.title = location.name
+				annotation.coordinate = selectedLocation.coordinate
+				annotation.title = selectedLocation.name
 				
-				if let city = location.locality, let state = location.administrativeArea, let country = location.country {
+				if let city = selectedLocation.locality, let state = selectedLocation.administrativeArea, let country = selectedLocation.country {
 					annotation.subtitle = "\(city) \(state), \(country)"
 				}
 				
@@ -234,7 +281,7 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 			
 			self.mapView.addAnnotations(annotations)
 			
-			// Draw polyline on the map
+			// polyline 을 map view 에 추가
 			let polyline = MKGeodesicPolyline(coordinates: coordinates, count: coordinates.count)
 			self.mapView.add(polyline)
 			self.polyline = polyline
@@ -249,9 +296,18 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 		self.mapView.setRegion(region, animated: true)
 	}
 	
-	// When animation is finished, show the center of schedules location
 	public func animateCenterLocationOnMap() {
-		let center = JourneyCoordinate.getCenterCoord(LocationPoints: self.journey.getCoordinatesOfJourney())
+		var coordinates = [CLLocationCoordinate2D]()
+		
+		// 사용자가 선택한 asset 의 장소를 coordinates 로 변환하여 배열에 저장
+		for schedule in self.schedules {
+			if self.resultAssets[schedule.location] != nil {
+				let coordinate = schedule.location.coordinate
+				coordinates.append(coordinate)
+			}
+		}
+		
+		let center = JourneyCoordinate.getCenterCoord(LocationPoints: coordinates)
 		let span = MKCoordinateSpanMake(30.0, 30.0)
 		let region = MKCoordinateRegionMake(center, span)
 		self.mapView.setRegion(region, animated: true)
@@ -269,37 +325,15 @@ extension PlayJourneyViewController: MKMapViewDelegate {
 	}
 }
 
-// MARK: - Implement methods of UICollectionViewDelegate and UICollectionViewDataSource
-
-extension PlayJourneyViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-	
-	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.allAssets.count
-	}
-	
-	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlayImageCell", for: indexPath) as! PlayImageCollectionViewCell
-		
-		let travelAsset: TravelAsset = self.allAssets[indexPath.row]
-		PHImageManager.default().requestImage(for: travelAsset.asset!, targetSize: cell.imageView.frame.size, contentMode: .aspectFill, options: nil, resultHandler: { (image, info) in
-			cell.imageView.image = image
-		})
-		
-		return cell
-	}
-}
-
-// MARK: - Methods for auto scrolling of UICollectionView
+// MARK: - Collection view 가 자동으로 스크롤 될 수 있도록 한다.
 
 extension PlayJourneyViewController {
 	
 	func configAutoScrollTimer() {
-		print("configAutoScrollTimer")
 		self.timer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(autoScrollView), userInfo: nil, repeats: true)
 	}
 	
 	func deconfigAutoScrollTimer() {
-		print("deconfigAutoScrollTimer")
 		self.timer?.invalidate()
 	}
 	
@@ -327,11 +361,12 @@ extension PlayJourneyViewController {
 			}
 			
 			if self.progress < self.collectionView.contentSize.width {
+				// animation 이 진행 중인 상태
 				self.progress += 5.0
 				self.contentWidth += 5.0
 			
-			// End of animation
 			} else {
+				// animation 이 끝난 상태
 				self.deconfigAutoScrollTimer()
 				self.journeyTitle.isHidden = true
 				self.journeyDate.isHidden = true
@@ -360,7 +395,7 @@ extension PlayJourneyViewController {
 								
 								self.bottomButton.setTitle("  Check the Output", for: .normal)
 								self.bottomButton.setImage(#imageLiteral(resourceName: "small_check"), for: .normal)
-								self.heightOfButtonView.constant = 44.0
+								self.bottomViewHeight.constant = 44.0
 							}
 						}
 					}
@@ -371,9 +406,8 @@ extension PlayJourneyViewController {
 			
 			let offsetPoint: CGPoint = CGPoint(x: self.progress, y: 0.0)
 			self.collectionView.contentOffset = offsetPoint
-		
+			
 		} else {
-			// If the user scrolls collection view, set contentOffset again
 			self.collectionView.contentOffset.x -= self.collectionView.contentOffset.x.truncatingRemainder(dividingBy: 5.0)
 			self.progress = self.collectionView.contentOffset.x
 		}
@@ -390,42 +424,6 @@ extension PlayJourneyViewController {
 	}
 }
 
-// MARK: - Methods to prepare animation
-
-extension PlayJourneyViewController {
-	
-	func appendScheduleAssets() {
-		for schedule in self.journey.schedules {
-			var aScheduleAsset = [TravelAsset]()
-			let dates = schedule.assetsDict.keys
-			
-			for date in dates {
-				let travelAssets: [TravelAsset] = schedule.assetsDict[date]!
-				for asset in travelAssets {
-					aScheduleAsset.append(asset)
-					self.allAssets.append(asset)
-				}
-			}
-			
-			self.scheduleAssets.append(aScheduleAsset)
-			
-			print("\(JourneyAddress.parseTitleAddress(schedule.location)!) : [\(aScheduleAsset.count)]")
-			
-			
-			let previousIndex: Int = self.scheduleOffset.count - 1
-			let offsetValue: CGFloat = CGFloat(aScheduleAsset.count) + self.scheduleOffset[previousIndex]
-			self.scheduleOffset.append(offsetValue)
-			
-		}
-		
-		print("scheduleOffset")
-		for offset in self.scheduleOffset {
-			print(offset)
-		}
-
-	}
-}
-
 extension PlayJourneyViewController: RPPreviewViewControllerDelegate {
 	
 	func previewControllerDidFinish(_ previewController: RPPreviewViewController) {
@@ -437,11 +435,11 @@ extension PlayJourneyViewController {
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 		if self.isRecording {
-			if self.heightOfButtonView.constant == 0 {
-				self.heightOfButtonView.constant = 44
-			
+			if self.bottomViewHeight.constant == 0 {
+				self.bottomViewHeight.constant = 44
+				
 			} else {
-				self.heightOfButtonView.constant = 0
+				self.bottomViewHeight.constant = 0
 			}
 		}
 	}

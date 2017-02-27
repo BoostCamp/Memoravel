@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CC26E9BB1E5EEA73006AE190 /* JourneyCoordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC26E9BA1E5EEA73006AE190 /* JourneyCoordinate.swift */; };
-		CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */; };
+		CC2C70F41E63E5530060F725 /* PlayJourneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2C70F31E63E5530060F725 /* PlayJourneyViewController.swift */; };
 		CC312FBB1E583A020099A6BC /* PlayImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */; };
 		CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC312FBC1E5849400099A6BC /* DateExtension.swift */; };
 		CC3356481E4CADE300C58493 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3356471E4CADE300C58493 /* CalendarViewController.swift */; };
@@ -48,7 +48,7 @@
 /* Begin PBXFileReference section */
 		6D8B660C73D09763ADC01E11 /* Pods-Memoravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Memoravel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Memoravel/Pods-Memoravel.debug.xcconfig"; sourceTree = "<group>"; };
 		CC26E9BA1E5EEA73006AE190 /* JourneyCoordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JourneyCoordinate.swift; sourceTree = "<group>"; };
-		CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayJourneyViewController.swift; sourceTree = "<group>"; };
+		CC2C70F31E63E5530060F725 /* PlayJourneyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayJourneyViewController.swift; sourceTree = "<group>"; };
 		CC312FBA1E583A020099A6BC /* PlayImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		CC312FBC1E5849400099A6BC /* DateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		CC3356471E4CADE300C58493 /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -163,8 +163,8 @@
 				CCB2C1D51E4A16070060FFB6 /* AssetViewController.swift */,
 				CCB2C1D71E4A169B0060FFB6 /* DetailViewController.swift */,
 				CCD65CEB1E5A6B0800D5F1C3 /* EditJourneyViewController.swift */,
-				CC312FB81E5826300099A6BC /* PlayJourneyViewController.swift */,
 				CCF4A7071E630B8B00CE248F /* SelectViewController.swift */,
+				CC2C70F31E63E5530060F725 /* PlayJourneyViewController.swift */,
 			);
 			name = "View Controller";
 			sourceTree = "<group>";
@@ -356,7 +356,6 @@
 				CCB2C1E81E4AB57C0060FFB6 /* Journey.swift in Sources */,
 				CCF4A70C1E630BB100CE248F /* SelectCollectionReusableView.swift in Sources */,
 				CCB2C1E21E4AB35B0060FFB6 /* TravelAsset.swift in Sources */,
-				CC312FB91E5826300099A6BC /* PlayJourneyViewController.swift in Sources */,
 				CCD65CEE1E5A802F00D5F1C3 /* EditScheduleCell.swift in Sources */,
 				CCB2C1D41E4A14A60060FFB6 /* ScheduleViewController.swift in Sources */,
 				CC312FBD1E5849400099A6BC /* DateExtension.swift in Sources */,
@@ -378,6 +377,7 @@
 				CCB2C1C21E4A0A920060FFB6 /* AppDelegate.swift in Sources */,
 				CC33566C1E4F48ED00C58493 /* CalendarCollectionViewCell.swift in Sources */,
 				CCB2C1D61E4A16070060FFB6 /* AssetViewController.swift in Sources */,
+				CC2C70F41E63E5530060F725 /* PlayJourneyViewController.swift in Sources */,
 				CCB2C1DA1E4A17F90060FFB6 /* CreateJourneyViewController.swift in Sources */,
 				CCB2C1F11E4AE6120060FFB6 /* JourneyDate.swift in Sources */,
 				CCB265E71E4BE65C00C35E7B /* MapViewController.swift in Sources */,
