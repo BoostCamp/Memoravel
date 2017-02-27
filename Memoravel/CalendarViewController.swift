@@ -86,7 +86,19 @@ extension CalendarViewController: FSCalendarDataSource, FSCalendarDelegate {
 		
 		// Get image assets taken at selected date
 		let fetchOptions = PHFetchOptions()
-		fetchOptions.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", self.selectedDate as NSDate, nextDate as NSDate)
+		
+		if let startDate = self.startDate {
+			if startDate < self.selectedDate {
+				fetchOptions.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", self.selectedDate as NSDate, nextDate as NSDate)
+			
+			} else {
+				fetchOptions.predicate = NSPredicate(format: "creationDate > %@ AND creationDate < %@", startDate as NSDate, nextDate as NSDate)
+			}
+		
+		} else {
+			fetchOptions.predicate = NSPredicate(format: "creationDate >= %@ AND creationDate < %@", self.selectedDate as NSDate, nextDate as NSDate)
+		}
+		
 		fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: true)]
 		self.selectedPhotos = PHAsset.fetchAssets(with: .image, options: fetchOptions)
 
